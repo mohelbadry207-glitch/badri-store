@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Badri Express | المتجر الإلكتروني الشامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--text-main);
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-icon {
+            font-size: 1.3rem;
+            color: var(--text-main);
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cart-icon:hover {
+            color: var(--primary-color);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--danger-color);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .admin-btn {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-btn:hover {
+            background-color: var(--border-color);
+        }
+
+        /* شريط الأقسام */
+        .categories-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 5%;
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .cat-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .cat-tab:hover, .cat-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        main {
+            flex: 1;
+            padding: 40px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            border-right: 5px solid var(--primary-color);
+            padding-right: 12px;
+            color: var(--text-main);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-image-wrapper {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8fafc;
+        }
+
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.03);
+        }
+
+        .product-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .product-price span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+
+        .buy-now-btn {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .buy-now-btn:hover {
+            background-color: #059669;
+        }
+
+        /* نافذة الدفع */
+        .checkout-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            backdrop-filter: blur(4px);
+        }
+
+        .checkout-content {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 440px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .close-checkout-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .checkout-group {
+            margin-bottom: 12px;
+        }
+
+        .checkout-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .checkout-group input, .checkout-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .payment-method-option {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .payment-method-option:hover {
+            border-color: var(--primary-color);
+            background-color: #f0f9ff;
+        }
+
+        .payment-method-option input {
+            width: auto;
+        }
+
+        .payment-method-option i {
+            font-size: 1.1rem;
+        }
+
+        .submit-checkout-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-checkout-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* لوحة التحكم */
+        .admin-panel-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .admin-panel-content {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 440px;
+        }
+
+        .panel-header-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .submit-prod-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-prod-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .delete-btn-admin {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background-color: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            padding: 20px 5%;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 30px;
+        }
+
+        footer strong {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">
+            <i class="fas fa-shopping-bag"></i>
+            Al-Badri <span>Express</span>
+        </a>
+        <div class="header-actions">
+            <div class="cart-icon" onclick="addToCart()">
+                <i class="fas fa-shopping-basket"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+            <button class="admin-btn" onclick="openAdminPanel()">
+                <i class="fas fa-user-shield"></i> المدير
+            </button>
+        </div>
+    </header>
+
+    <div class="categories-nav">
+        <div class="cat-tab active" onclick="filterCategory('الكل')">الكل</div>
+        <div class="cat-tab" onclick="filterCategory('الساعات')">الساعات</div>
+        <div class="cat-tab" onclick="filterCategory('الهواتف')">الهواتف</div>
+        <div class="cat-tab" onclick="filterCategory('الأحذية')">الأحذية</div>
+        <div class="cat-tab" onclick="filterCategory('إلكترونيات')">إلكترونيات</div>
+    </div>
+
+    <main>
+        <h1 class="page-title">قائمة المنتجات المتاحة</h1>
+        
+        <div class="products-grid" id="productsContainer">
+            <div class="product-card" data-category="الساعات">
+                <button class="delete-btn-admin" onclick="deleteProduct(this)"><i class="fas fa-trash-alt"></i></button>
+                <div class="product-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" alt="ساعة ذكية" class="product-image">
+                </div>
+                <div class="product-info">
+                    <p class="product-category">الساعات</p>
+                    <h3 class="product-title">ساعة ذكية مقاومة للماء مع شاشة أموليد</h3>
+                    <div class="product-meta">
+                        <div class="product-price">3200 <span>ج.م</span></div>
+                        <button class="buy-now-btn" onclick="openCheckoutModal('ساعة ذكية', '3200')">
+                            <i class="fas fa-shopping-cart"></i> شراء
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="إلكترونيات">
+                <button class="delete-btn-admin" onclick="deleteProduct(this)"><i class="fas fa-trash-alt"></i></button>
+                <div class="product-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="سماعة لاسلكية" class="product-image">
+                </div>
+                <div class="product-info">
+                    <p class="product-category">إلكترونيات</p>
+                    <h3 class="product-title">سماعات رأس لاسلكية عازلة للضوضاء</h3>
+                    <div class="product-meta">
+                        <div class="product-price">4500 <span>ج.م</span></div>
+                        <button class="buy-now-btn" onclick="openCheckoutModal('سماعات رأس لاسلكية', '4500')">
+                            <i class="fas fa-shopping-cart"></i> شراء
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="الأحذية">
+                <button class="delete-btn-admin" onclick="deleteProduct(this)"><i class="fas fa-trash-alt"></i></button>
+                <div class="product-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" alt="حذاء رياضي" class="product-image">
+                </div>
+                <div class="product-info">
+                    <p class="product-category">الأحذية</p>
+                    <h3 class="product-title">حذاء نايكي رياضي أصلي مريح وجذاب</h3>
+                    <div class="product-meta">
+                        <div class="product-price">2500 <span>ج.م</span></div>
+                        <button class="buy-now-btn" onclick="openCheckoutModal('حذاء نايكي رياضي', '2500')">
+                            <i class="fas fa-shopping-cart"></i> شراء
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="الهواتف">
+                <button class="delete-btn-admin" onclick="deleteProduct(this)"><i class="fas fa-trash-alt"></i></button>
+                <div class="product-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500" alt="هاتف ذكي" class="product-image">
+                </div>
+                <div class="product-info">
+                    <p class="product-category">الهواتف</p>
+                    <h3 class="product-title">هاتف ذكي بذاكرة واسعة وكاميرا احترافية</h3>
+                    <div class="product-meta">
+                        <div class="product-price">7800 <span>ج.م</span></div>
+                        <button class="buy-now-btn" onclick="openCheckoutModal('هاتف ذكي', '7800')">
+                            <i class="fas fa-shopping-cart"></i> شراء
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="checkout-overlay" id="checkoutModal">
+        <div class="checkout-content">
+            <div class="panel-header">
+                <h2>إتمام عملية الشراء</h2>
+                <button class="close-checkout-btn" onclick="closeCheckoutModal()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="checkout-group">
+                <label>اسمك الكامل</label>
+                <input type="text" id="buyerName" placeholder="أدخل الاسم...">
+            </div>
+            <div class="checkout-group">
+                <label>رقم الهاتف</label>
+                <input type="tel" id="buyerPhone" placeholder="01XXXXXXXXX">
+            </div>
+            <div class="checkout-group">
+                <label>العنوان بالتفصيل</label>
+                <input type="text" id="buyerAddress" placeholder="المدينة، العنوان...">
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 12px 0;">اختر وسيلة الدفع:</p>
+            <div class="payment-methods">
+                <label class="payment-method-option" style="color: #6d28d9;">
+                    <input type="radio" name="payment" value="بطاقة الائتمان (Visa/Mastercard)">
+                    <i class="far fa-credit-card"></i>
+                    <span>بطاقة الائتمان (فيزا/ماستركارد)</span>
+                </label>
+                
+                <label class="payment-method-option" style="color: #d97706;">
+                    <input type="radio" name="payment" value="فوري Pay">
+                    <i class="fas fa-barcode"></i>
+                    <span>كود فوري (Fawry Pay)</span>
+                </label>
+
+                <label class="payment-method-option" style="color: #4338ca;">
+                    <input type="radio" name="payment" value="إنستا باي">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>إنستا باي (InstaPay)</span>
+                </label>
+
+                <label class="payment-method-option" style="color: #ef4444;">
+                    <input type="radio" name="payment" value="فودافون كاش">
+                    <i class="fas fa-wallet"></i>
+                    <span>محفظة فودافون كاش</span>
+                </label>
+
+                <label class="payment-method-option" style="color: #1f2937;">
+                    <input type="radio" name="payment" value="الدفع عند الاستلام" checked>
+                    <i class="fas fa-truck"></i>
+                    <span>الدفع عند الاستلام (COD)</span>
+                </label>
+            </div>
+
+            <button class="submit-checkout-btn" onclick="submitOrder()">تأكيد الطلب الآن <i class="fas fa-check"></i></button>
+        </div>
+    </div>
+
+    <div class="admin-panel-overlay" id="adminPanel">
+        <div class="admin-panel-content">
+            <div class="panel-header-admin">
+                <h2>إدارة المتجر</h2>
+                <button class="close-checkout-btn" onclick="closeAdminPanel()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="checkout-group">
+                <label>القسم</label>
+                <select id="prodCategory">
+                    <option value="الساعات">الساعات</option>
+                    <option value="الهواتف">الهواتف</option>
+                    <option value="الأحذية">الأحذية</option>
+                    <option value="إلكترونيات">إلكترونيات</option>
+                </select>
+            </div>
+            <div class="checkout-group">
+                <label>اسم المنتج</label>
+                <input type="text" id="prodTitle" placeholder="اسم المنتج...">
+            </div>
+            <div class="checkout-group">
+                <label>السعر بالجنيه</label>
+                <input type="number" id="prodPrice" placeholder="السعر...">
+            </div>
+            <div class="checkout-group">
+                <label>رابط الصورة</label>
+                <input type="text" id="prodImage" placeholder="ضع رابط الصورة هنا...">
+            </div>
+            <button class="submit-prod-btn" onclick="addProduct()">إضافة المنتج ونشره <i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; <span id="year">2026</span> لـ <strong>Al-Badri Express</strong>
+    </footer>
+
+    <script>
+        // السلة التفاعلية
+        let cartItems = 0;
+        function addToCart() {
+            cartItems++;
+            document.getElementById('cartCount').innerText = cartItems;
+            alert('تمت إضافة المنتج إلى السلة!');
+        }
+
+        // فلترة الأقسام
+        function filterCategory(category) {
+            // تحديث الأزرار
+            const tabs = document.querySelectorAll('.cat-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // إظهار وإخفاء المنتجات
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'الكل' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // إتمام الشراء
+        let selectedTitle = "";
+        let selectedPrice = "";
+        
+        function openCheckoutModal(title, price) {
+            selectedTitle = title;
+            selectedPrice = price;
+            document.getElementById('checkoutModal').style.display = 'flex';
+        }
+        
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('buyerName').value;
+            const phone = document.getElementById('buyerPhone').value;
+            const address = document.getElementById('buyerAddress').value;
+
+            const methods = document.getElementsByName('payment');
+            let method = "الدفع عند الاستلام";
+            methods.forEach(item => {
+                if (item.checked) method = item.value;
+            });
+
+            if (!name || !phone || !address) {
+                alert("برجاء إدخال (الاسم، الهاتف، والعنوان) لإتمام الطلب!");
+                return;
+            }
+
+            alert(`تم تأكيد الطلب بنجاح! 
+المنتج: ${selectedTitle}
+السعر: ${selectedPrice} ج.م
+وسيلة الدفع: ${method}
+سنتواصل معك هاتفياً قريباً.`);
+            
+            closeCheckoutModal();
+        }
+
+        // إدارة المنتجات
+        function openAdminPanel() {
+            let pass = prompt("أدخل كلمة مرور المدير (admin123):");
+            if (pass === "admin123") {
+                document.getElementById('adminPanel').style.display = 'flex';
+                document.querySelectorAll('.delete-btn-admin').forEach(btn => btn.style.display = 'flex');
+            } else if (pass !== null) {
+                alert("كلمة المرور غير صحيحة");
+            }
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        function addProduct() {
+            const category = document.getElementById('prodCategory').value;
+            const title = document.getElementById('prodTitle').value;
+            const price = document.getElementById('prodPrice').value;
+            const image = document.getElementById('prodImage').value;
+
+            if (!title || !price) {
+                alert("يرجى تعبئة الاسم والسعر!");
+                return;
+            }
+
+            const container = document.getElementById('productsContainer');
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.setAttribute('data-category', category);
+
+            card.innerHTML = `
+                <button class="delete-btn-admin" style="display:flex;" onclick="deleteProduct(this)"><i class="fas fa-trash-alt"></i></button>
+                <div class="product-image-wrapper">
+                    <img src="${image || 'https://via.placeholder.com/300'}" alt="${title}" class="product-image">
+                </div>
+                <div class="product-info">
+                    <p class="product-category">${category}</p>
+                    <h3 class="product-title">${title}</h3>
+                    <div class="product-meta">
+                        <div class="product-price">${price} <span>ج.م</span></div>
+                        <button class="buy-now-btn" onclick="openCheckoutModal('${title}', '${price}')">
+                            <i class="fas fa-shopping-cart"></i> شراء
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.prepend(card);
+            closeAdminPanel();
+            alert("تم نشر المنتج الجديد بنجاح!");
+        }
+
+        function deleteProduct(btn) {
+            if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
+                btn.closest('.product-card').remove();
+            }
+        }
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
