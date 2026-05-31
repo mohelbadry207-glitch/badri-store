@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diesel Platform</title>
+    <style>
+        body { background-color: #0a0a0a; color: #ffd700; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        h1 { color: #00ffcc; text-shadow: 0 0 10px #00ffcc; }
+        .card { border: 2px solid #ffd700; border-radius: 15px; padding: 20px; margin: 10px; width: 90%; max-width: 500px; box-shadow: 0 0 15px #ffd700; background: #111; }
+        h2 { color: #00ffcc; border-bottom: 2px solid #00ffcc; padding-bottom: 5px; }
+        .link-item { display: block; color: #ffd700; background: #222; padding: 10px; margin: 5px 0; border: 1px solid #ffd700; text-decoration: none; border-radius: 5px; text-align: center; }
+        .code-area { width: 100%; height: 80px; background: #000; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px; margin-top: 10px; }
+        .whatsapp-float { position: fixed; bottom: 20px; left: 20px; width: 60px; z-index: 1000; }
+        .video-box { width: 100%; margin-top: 10px; border: 2px solid #00ffcc; }
+        .btn-group { display: flex; gap: 5px; margin-top: 5px; }
+        .quote-box { text-align: right; line-height: 1.6; color: #fff; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <h1>Diesel Platform</h1>
+
+    <!-- 1. محرر الأكواد -->
+    <div class="card">
+        <h2>محرر الأكواد (عدل وجرب)</h2>
+        <textarea id="myCode" class="code-area" placeholder="اكتب الكود هنا..."></textarea>
+        <div class="btn-group">
+            <button style="flex:2; padding:10px; cursor:pointer;">تعديل الكود</button>
+            <button onclick="copyCode()" style="flex:1; padding:10px; cursor:pointer; background:#00ffcc;">نسخ</button>
+        </div>
+    </div>
+
+    <!-- 2. قسم المقولات التقنية (جديد) -->
+    <div class="card">
+        <h2>حكم ومقولات تقنية</h2>
+        <div class="quote-box">
+            <p>• البرمجة هي فن تحويل الأفكار إلى واقع رقمي.</p>
+            <p>• الكود البسيط هو الكود الأفضل والأقوى.</p>
+            <p>• لا تتوقف عن التعلم، فالتكنولوجيا لا تتوقف أبداً.</p>
+            <p>• المبرمج الناجح هو من يرى الحل قبل المشكلة.</p>
+            <p>• الأخطاء في الكود هي دروس مجانية للتعلم.</p>
+        </div>
+    </div>
+
+    <!-- 3. مكتبة الفيديوهات -->
+    <div class="card">
+        <h2>مكتبة الفيديوهات</h2>
+        <div class="video-box">
+            <iframe width="100%" height="200" src="https://www.youtube.com/embed/kqtD5dpn9C8" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- 4. القنوات التعليمية -->
+    <div class="card">
+        <h2>أفضل المصادر التعليمية</h2>
+        <strong>عربياً:</strong>
+        <a class="link-item" href="https://www.youtube.com/@ElzeroWebSchool">Elzero Web School</a>
+        <a class="link-item" href="https://www.youtube.com/@Codezilla">Codezilla</a>
+        <strong>عالمياً:</strong>
+        <a class="link-item" href="https://www.youtube.com/@freecodecamp">freeCodeCamp</a>
+        <a class="link-item" href="https://www.youtube.com/@programmingwithmosh">Programming with Mosh</a>
+    </div>
+
+    <!-- وظيفة النسخ -->
+    <script>
+        function copyCode() {
+            var copyText = document.getElementById("myCode");
+            copyText.select();
+            document.execCommand("copy");
+            alert("تم نسخ الكود بنجاح!");
+        }
+    </script>
+
+    <!-- واتساب الدعم -->
+    <a href="https://wa.me/201068896761" class="whatsapp-float">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="100%">
+    </a>
+
+    <!-- كود البوت -->
+    <script>
+        (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="DdngL8r3s2pfzL6hG2oIO";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>
+</body>
+</html>
