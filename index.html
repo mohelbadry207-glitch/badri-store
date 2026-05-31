@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Diesel Platform | بوابتك البرمجية</title>
+    <style>
+        body { background-color: #0a0a0a; color: #ffd700; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .card { border: 2px solid #ffd700; border-radius: 15px; padding: 20px; margin: 10px; width: 90%; max-width: 600px; background: #111; box-shadow: 0 0 15px #ffd700; }
+        .code-editor { width: 100%; height: 100px; background: #000; color: #00ffcc; border: 1px solid #00ffcc; padding: 10px; border-radius: 5px; margin-top: 10px; }
+        
+        /* أيقونة الواتساب (يسار) */
+        .whatsapp-float { position: fixed; bottom: 20px; left: 20px; z-index: 1000; }
+        .whatsapp-float img { width: 60px; transition: 0.3s; }
+        .whatsapp-float img:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <h1>Diesel Platform</h1>
+
+    <div class="card">
+        <h2>محرر الأكواد الذكي</h2>
+        <p>اكتب كودك هنا، وسيقوم النظام بتحليله وتعديله:</p>
+        <textarea class="code-editor" placeholder="اكتب كود بايثون أو JavaScript هنا..."></textarea>
+        <button style="margin-top:10px; padding:10px; cursor:pointer;">تحليل وتعديل الكود</button>
+    </div>
+
+    <div class="card">
+        <h2>أفضل القنوات العالمية والعربية</h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <a href="https://www.youtube.com/@ElzeroWebSchool">Elzero (عربي)</a>
+            <a href="https://www.youtube.com/@Codezilla">Codezilla (عربي)</a>
+            <a href="https://www.youtube.com/@freecodecamp">FreeCodeCamp</a>
+            <a href="https://www.youtube.com/@programmingwithmosh">Mosh</a>
+            <a href="https://www.youtube.com/@TraversyMedia">Traversy</a>
+        </div>
+    </div>
+
+    <a href="https://wa.me/201068896761" target="_blank" class="whatsapp-float">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="دعم ديزل">
+    </a>
+
+    <script>
+        (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="DdngL8r3s2pfzL6hG2oIO";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>
+</body>
+</html>
