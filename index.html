@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الديزل - تزويد المتابعين</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: #131b2e;
+            border: 2px solid #00ffcc;
+            border-radius: 16px;
+            padding: 25px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #00ffcc;
+            font-size: 26px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+        .subtitle {
+            color: #ffd700;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .ai-welcome {
+            background: #1a2639;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px dashed #ffd700;
+            font-size: 13px;
+            color: #e2e8f0;
+            text-align: right;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #0b0f19;
+            border: 1px solid #00ffcc;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        .btn {
+            background: linear-gradient(135deg, #00ffcc, #ffd700);
+            color: #000;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+        }
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        #profileSection {
+            display: none;
+            margin-top: 15px;
+        }
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+        .privacy-link {
+            display: block;
+            margin-top: 20px;
+            color: #a0aec0;
+            font-size: 12px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        #status {
+            font-size: 14px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>⚡ AL-DIESEL ⚡</h1>
+        <div class="subtitle">منصة الديزل الاحترافية لتزويد المتابعين</div>
+        
+        <div class="ai-welcome" id="welcomeText">
+            🤖 <strong>مساعد الذكاء الاصطناعي:</strong> مرحباً بك يا غالي في منصة الديزل. أدخل اسم المستخدم الخاص بك لنبدأ التجربة الفورية!
+        </div>
+
+        <div id="step1">
+            <input type="text" id="username" placeholder="أدخل اسم المستخدم (Username)">
+            <button class="btn" onclick="checkUser()">بحث عن الحساب 🔍</button>
+        </div>
+
+        <div id="profileSection">
+            <img id="userAvatar" src="" alt="صورة الحساب" class="profile-img">
+            <h3 id="displayName" style="color: #00ffcc; margin-bottom: 5px;"></h3>
+            <p style="font-size: 12px; color: #a0aec0; margin-bottom: 15px;">تم العثور على الحساب بنجاح ✅</p>
+            
+            <p style="font-size: 13px; color: #ffd700; margin-bottom: 10px;">اختر باقة المتابعين المطلوبة:</p>
+            <select id="packageSelect">
+                <option value="100 متابع">100 متابع</option>
+                <option value="500 متابع">500 متابع</option>
+                <option value="1,000 متابع">1,000 متابع</option>
+                <option value="5,000 متابع">5,000 متابع</option>
+                <option value="10,000 متابع">10,000 متابع</option>
+            </select>
+
+            <button class="btn" onclick="sendOrder()">تأكيد وإرسال الطلب 🚀</button>
+        </div>
+
+        <div id="status"></div>
+
+        <span class="privacy-link" onclick="alert('سياسة الخصوصية: نحن نعتمد على اسم المستخدم العام فقط لتقديم الخدمة ولا نطلب كلمات مرور أبداً لتأمين حسابك بالكامل.')">سياسة الخصوصية وشروط الاستخدام</span>
+    </div>
+
+    <script>
+        const TOKEN = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+        const CHAT_ID = "5177962707";
+
+        // دالة الذكاء الاصطناعي للنطق الصوتي الترحيبي
+        function speakWelcome() {
+            if ('speechSynthesis' in window) {
+                let utterance = new SpeechSynthesisUtterance("مرحباً بك يا غالي في منصة الديزل لتزويد المتابعين، نتمنى لك تجربة ممتعة.");
+                utterance.lang = 'ar-SA';
+                utterance.rate = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // تشغيل الترحيب الصوتي عند فتح الصفحة أول مرة
+        window.addEventListener('click', () => {
+            // تفعيل الصوت بعد أول تفاعل للمتصفح
+        }, { once: true });
+
+        function checkUser() {
+            const username = document.getElementById('username').value.trim();
+            const statusDiv = document.getElementById('status');
+            
+            if (!username) {
+                statusDiv.style.color = "#f56565";
+                statusDiv.innerHTML = "❌ رجاءً أدخل اسم المستخدم أولاً!";
+                return;
+            }
+
+            // تشغيل الترحيب الصوتي بالذكاء الاصطناعي
+            speakWelcome();
+
+            statusDiv.style.color = "#00ffcc";
+            statusDiv.innerHTML = "⏳ جاري فحص الحساب وجلب البيانات...";
+
+            setTimeout(() => {
+                // جلب صورة الحساب الحقيقية عبر واجهة انستغرام العامة أو الأفاتار الافتراضي الاحترافي باليوزر
+                document.getElementById('userAvatar').src = `https://unavatar.io/instagram/${username}`;
+                document.getElementById('displayName').innerText = "@" + username;
+                
+                document.getElementById('step1').style.display = "none";
+                document.getElementById('profileSection').style.display = "block";
+                statusDiv.innerHTML = "";
+            }, 1500);
+        }
+
+        async function sendOrder() {
+            const username = document.getElementById('username').value.trim();
+            const packageVal = document.getElementById('packageSelect').value;
+            const statusDiv = document.getElementById('status');
+
+            statusDiv.style.color = "#ffd700";
+            statusDiv.innerHTML = "⏳ جاري إرسال تفاصيل الطلب للبوت...";
+
+            const message = `🔥 طلب تزويد جديد من منصة الديزل!\n\n👤 الحساب: @${username}\n📦 الباقة المختارة: ${packageVal}\n⚙️ الحالة: بانتظار التنفيذ`;
+
+            try {
+                let response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message
+                    })
+                });
+
+                let data = await response.json();
+                if (data.ok) {
+                    statusDiv.style.color = "#48bb78";
+                    statusDiv.innerHTML = "✅ تم تأكيد طلبك بنجاح! سيتم البدء بإرسال المتابعين قريباً.";
+                } else {
+                    statusDiv.style.color = "#f56565";
+                    statusDiv.innerHTML = "❌ فشل إرسال الطلب، حاول مرة أخرى.";
+                }
+            } catch (error) {
+                statusDiv.style.color = "#f56565";
+                statusDiv.innerHTML = "❌ حدث خطأ في الاتصال بالشبكة.";
+            }
+        }
+    </script>
+</body>
+</html>
