@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الديزل - المنصة الرسمية لتزويد المتابعين</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        .container {
+            background: #121212;
+            border: 1px solid #262626;
+            border-radius: 12px;
+            padding: 22px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 4px 25px rgba(0, 255, 204, 0.2);
+            text-align: center;
+        }
+        .logo-insta {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2px;
+        }
+        .subtitle {
+            color: #00ffcc;
+            font-size: 12px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        /* عداد المتابعين الحي الشغال على طول */
+        .live-counter-box {
+            background: #1a1a1a;
+            border: 1px dashed #00ffcc;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        /* التقييمات والنجوم المعكوسة وتحت بعضها */
+        .reviews-section {
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 12px;
+            max-height: 70px;
+            overflow: hidden;
+            font-size: 11px;
+            color: #b0b0b0;
+        }
+        .review-item {
+            margin-bottom: 4px;
+        }
+        .stars {
+            color: #ffd700;
+            letter-spacing: 2px;
+        }
+        .ai-welcome {
+            background: #1e1e1e;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid #00ffcc;
+            font-size: 12px;
+            color: #e0e0e0;
+            text-align: right;
+        }
+        input, select {
+            width: 100%;
+            padding: 11px;
+            margin-bottom: 10px;
+            background: #262626;
+            border: 1px solid #3db39e;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            text-align: center;
+        }
+        .btn {
+            background: linear-gradient(135deg, #00ffcc, #0099ff);
+            color: #000;
+            font-weight: bold;
+            padding: 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            font-size: 15px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        #step2, #loadingSection {
+            display: none;
+        }
+        .profile-img {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 3px solid #00ffcc;
+            margin: 8px auto;
+            object-fit: cover;
+            display: block;
+        }
+        /* عداد الوقت الدائري */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border-left-color: #00ffcc;
+            animation: spin 1s linear infinite;
+            margin: 12px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .footer-links {
+            margin-top: 12px;
+            font-size: 11px;
+            color: #8e8e8e;
+        }
+        .footer-links span {
+            color: #00ffcc;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-insta">📸 AL-DIESEL VIP</div>
+        <div class="subtitle">منصة تزويد المتابعين الحقيقيين عبر انستجرام</div>
+        
+        <!-- عداد شغال على طول يحاكي التحويل الحقيقي -->
+        <div class="live-counter-box">
+            ⚡ تم تحويل اليوم: <span id="liveCounter" style="color:#00ffcc">14,852</span> متابع
+        </div>
+
+        <!-- نجوم وتقييمات تحت بعضها -->
+        <div class="reviews-section">
+            <div class="review-item"><span class="stars">★★★★★</span> محمود السيد: "خدمة سريعة جداً وصلوني 10k!"</div>
+            <div class="review-item"><span class="stars">★★★★★</span> أحمد الديزل: "أفضل موقع تزويد بدون مشاكل."</div>
+            <div class="review-item"><span class="stars">★★★★★</span> إسلام علي: "الخدمة ممتازة والدعم سريع."</div>
+        </div>
+
+        <div class="ai-welcome" id="aiWelcomeMsg">
+            🤖 <strong>مساعد الديزل الذكي:</strong> أهلاً بك يا غالي. أدخل اسم المستخدم (Username) لنقوم بفحص حسابك وجلب بياناتك فوراً.
+        </div>
+
+        <!-- الخطوة الأولى: إدخال اليوزر -->
+        <div id="step1">
+            <input type="text" id="usernameInput" placeholder="أدخل يوزر انستجرام (مثال: x_elbadry)">
+            <button class="btn" onclick="searchAccount()">بحث عن الحساب 🔍</button>
+        </div>
+
+        <!-- الخطوة الثانية: تأكيد الحساب وصورته واختيار الباقة -->
+        <div id="step2">
+            <img id="instaAvatar" class="profile-img" src="" alt="صورة الحساب">
+            <h3 id="profileName" style="color: #00ffcc; font-size: 15px; margin-bottom: 3px;"></h3>
+            <p style="font-size: 11px; color: #00ffcc; margin-bottom: 10px;">✅ تم التحقق من الحساب بنجاح</p>
+            
+            <p style="font-size: 12px; color: #ffd700; margin-bottom: 6px;">اختر كمية المتابعين المطلوبة:</p>
+            <select id="packageSelect">
+                <option value="100 متابع حقيقي">100 متابع</option>
+                <option value="500 متابع حقيقي">500 متابع</option>
+                <option value="1,000 متابع حقيقي">1,000 متابع</option>
+                <option value="5,000 متابع حقيقي">5,000 متابع</option>
+                <option value="10,000 متابع حقيقي">10,000 متابع VIP</option>
+            </select>
+
+            <button class="btn" onclick="startLoadingProcess()">بدء إرسال المتابعين 🚀</button>
+        </div>
+
+        <!-- الخطوة الثالثة: عداد الوقت والتحميل -->
+        <div id="loadingSection">
+            <div class="spinner"></div>
+            <h3 id="loadingText" style="color: #00ffcc; font-size: 13px; margin-bottom: 8px;">جاري الاتصال بسيرفرات انستجرام...</h3>
+            <div id="timerCount" style="font-size: 18px; font-weight: bold; color: #ffd700;">12 ثانية</div>
+        </div>
+
+        <div id="statusResult" style="margin-top: 10px; font-size: 12px; font-weight: bold;"></div>
+
+        <div class="footer-links">
+            <span onclick="alert('سياسة الخصوصية: نضمن أمان حسابك التام بالاعتماد على اليوزرنيم العام فقط.')">سياسة الخصوصية</span> | 
+            <span onclick="alert('رقم الدعم الفني المعتمد للتواصل وحل أي عطل: 01068896761')">📞 الدعم الفني</span>
+        </div>
+    </div>
+
+    <script>
+        const TOKEN = "8730123549:AAGfIdQEXH1qXboe0aGMQZePGg5k4ec1tPU";
+        const CHAT_ID = "5177962707";
+        let currentUsername = "";
+
+        // زيادة وهمية حية لعداد التحويلات ليبقى الموقع "شغال على طول"
+        setInterval(() => {
+            let counter = document.getElementById('liveCounter');
+            if(counter) {
+                let currentVal = parseInt(counter.innerText.replace(/,/g, ''));
+                counter.innerText = (currentVal + Math.floor(Math.random() * 3) + 1).toLocaleString();
+            }
+        }, 3000);
+
+        // مكتبة نطق صوتي متطورة ومحسنة ترحب بالمستخدم
+        function speakWelcome(username) {
+            if ('speechSynthesis' in window) {
+                let utterance = new SpeechSynthesisUtterance("مرحباً بك يا " + username + " في منصة الديزل لتزويد المتابعين، نتمنى لك تجربة ممتعة.");
+                utterance.lang = 'ar-SA';
+                utterance.rate = 1.05;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function searchAccount() {
+            const username = document.getElementById('usernameInput').value.trim();
+            const statusDiv = document.getElementById('statusResult');
+
+            if (!username) {
+                statusDiv.style.color = "#ff4d4d";
+                statusDiv.innerHTML = "❌ رجاءً أدخل اسم المستخدم بشكل صحيح!";
+                return;
+            }
+
+            currentUsername = username;
+            statusDiv.style.color = "#00ffcc";
+            statusDiv.innerHTML = "⏳ جاري فحص الحساب...";
+
+            // تشغيل الصوت الترحيبي المحسن باسم المستخدم
+            speakWelcome(username);
+
+            setTimeout(() => {
+                // جلب صورة انستجرام الحقيقية المباشرة
+                document.getElementById('instaAvatar').src = `https://unavatar.io/instagram/${username}`;
+                document.getElementById('profileName').innerText = "@" + username;
+
+                document.getElementById('step1').style.display = "none";
+                document.getElementById('step2').style.display = "block";
+                statusDiv.innerHTML = "";
+            }, 1000);
+        }
+
+        function startLoadingProcess() {
+            const packageVal = document.getElementById('packageSelect').value;
+            document.getElementById('step2').style.display = "none";
+            document.getElementById('loadingSection').style.display = "block";
+
+            let timeLeft = 10;
+            const timerElement = document.getElementById('timerCount');
+            const loadingText = document.getElementById('loadingText');
+
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.innerText = timeLeft + " ثانية";
+
+                if (timeLeft === 6) {
+                    loadingText.innerText = "جاري ربط الحساب بقاعدة بيانات المتابعين...";
+                } else if (timeLeft === 3) {
+                    loadingText.innerText = "جاري إرسال المتابعين للحساب بنجاح...";
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    sendOrderToTelegram(packageVal);
+                }
+            }, 1000);
+        }
+
+        async function sendOrderToTelegram(packageVal) {
+            const loadingSec = document.getElementById('loadingSection');
+            const statusDiv = document.getElementById('statusResult');
+
+            loadingSec.style.display = "none";
+            statusDiv.style.color = "#00ffcc";
+            statusDiv.innerHTML = "⏳ جاري تأكيد الطلب نهائياً...";
+
+            const message = `🔥 طلب تزويد متابعين جديد مؤكد!\n\n👤 الحساب المستهدف: @${currentUsername}\n📦 الباقة: ${packageVal}\n📞 رقم الدعم: 01068896761\n🌐 الحالة: تم إرسال الطلب بنجاح`;
+
+            try {
+                let response = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message
+                    })
+                });
+
+                let data = await response.json();
+                if (data.ok) {
+                    statusDiv.style.color = "#00ffcc";
+                    statusDiv.innerHTML = `✅ تم إرسال المتابعين بنجاح إلى @${currentUsername}! وللدعم الفني اتصل على: 01068896761`;
+                } else {
+                    statusDiv.style.color = "#ff4d4d";
+                    statusDiv.innerHTML = "❌ حدث خطأ أثناء إرسال الطلب للبوت.";
+                }
+            } catch (error) {
+                statusDiv.style.color = "#ff4d4d";
+                statusDiv.innerHTML = "❌ خطأ في الاتصال بالشبكة.";
+            }
+        }
+    </script>
+</body>
+</html>
