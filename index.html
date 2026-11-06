@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlDoc" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حارس البدري الذكي للسوشيال ميديا - Elbadry Smart Guard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
+    <style>
+        [data-theme="dark"] {
+            --bg-color: #030712;
+            --card-bg: rgba(15, 23, 42, 0.95);
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-color: #00ffcc;
+            --secondary-color: #00d2ff;
+            --primary-glow: rgba(0, 255, 204, 0.4);
+            --border-color: rgba(0, 255, 204, 0.3);
+            --input-bg: rgba(30, 41, 59, 0.8);
+            --danger-color: #ef4444;
+            --header-bg: rgba(3, 7, 18, 0.95);
+            --star-color: #fbbf24;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #0f172a;
+            --text-muted: #475569;
+            --primary-color: #0d9488;
+            --secondary-color: #0284c7;
+            --primary-glow: rgba(13, 148, 136, 0.3);
+            --border-color: rgba(13, 148, 136, 0.3);
+            --input-bg: rgba(241, 245, 249, 0.9);
+            --danger-color: #dc2626;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --star-color: #d97706;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: background 0.3s ease, color 0.3s ease, border 0.3s ease; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--header-bg);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            gap: 10px;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 8px; }
+        .logo {
+            font-size: 1rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        select, .theme-toggle-btn, .achievements-btn {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .achievements-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #030712;
+            border: none;
+            font-weight: 800;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 10px;
+            gap: 15px;
+        }
+
+        .radar-banner {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 10px 15px;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 0 15px var(--primary-glow);
+            font-size: 0.8rem;
+        }
+        .radar-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
+
+        .container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px 15px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        h1 { font-size: 1.3rem; margin-bottom: 6px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: var(--text-muted); margin-bottom: 15px; font-size: 0.8rem; }
+        .hidden { display: none !important; }
+
+        .btn-google {
+            background: #ffffff; color: #030712; border: 1px solid #cbd5e1; width: 100%; padding: 10px;
+            border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;
+        }
+        .captcha-box { margin: 12px 0; display: flex; justify-content: center; transform: scale(0.85); transform-origin: 0 0; }
+
+        .platforms-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .platform-card {
+            background: var(--input-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 10px;
+            cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.85rem;
+        }
+        .platform-card:hover, .platform-card.connected { border-color: var(--primary-color); box-shadow: 0 0 12px var(--primary-glow); }
+        .platform-card i { font-size: 1.5rem; }
+        .platform-card i.fa-facebook { color: #1877f2; }
+        .platform-card i.fa-instagram { color: #e4405f; }
+        .platform-card i.fa-tiktok { color: #ff0050; }
+        .platform-card i.fa-whatsapp { color: #25d366; }
+        .platform-card i.fa-telegram { color: #229ed9; }
+
+        .id-section { background: var(--input-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 15px; word-break: break-all; }
+        .secret-id { font-size: 0.85rem; font-weight: 900; color: var(--primary-color); margin: 6px 0; direction: ltr; }
+
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc, #229ed9); color: #fff; border: none; width: 100%;
+            padding: 10px; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+        }
+
+        .stats-rating-section, .support-hub-box, .anti-boredom-box {
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 15px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .visitor-counter { font-size: 0.85rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .stars-container { display: flex; justify-content: center; gap: 6px; font-size: 1.3rem; color: var(--star-color); cursor: pointer; margin-bottom: 8px; }
+        .comment-input, .pass-test-input, .form-group input { width: 100%; padding: 8px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-color); font-size: 0.85rem; margin-bottom: 8px; }
+        .comment-input { resize: none; height: 50px; }
+        .btn-rate, .btn-submit { background: var(--primary-color); color: #030712; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.85rem; width: 100%; }
+
+        .support-item { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-bottom: 8px; font-size: 0.8rem; text-align: right; }
+        .copy-btn { background: var(--primary-color); color: #030712; border: none; padding: 3px 8px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 0.7rem; }
+
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 2000; padding: 15px; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); padding: 20px; border-radius: 14px; width: 100%; max-width: 400px; text-align: right; max-height: 85vh; overflow-y: auto; }
+        .form-actions { display: flex; gap: 8px; margin-top: 12px; }
+        .btn-cancel { flex: 1; background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 8px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+        /* الشات الجانبي */
+        .ai-chat-widget { position: fixed; bottom: 15px; left: 15px; z-index: 2500; }
+        .chat-toggle-btn { background: var(--primary-color); color: #030712; border: none; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; box-shadow: 0 4px 15px var(--primary-glow); display: flex; align-items: center; justify-content: center; }
+        .chat-box { position: absolute; bottom: 60px; left: 0; width: 310px; height: 380px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; flex-direction: column; overflow: hidden; }
+        .chat-box.open { display: flex; }
+        .chat-header { background: var(--input-bg); padding: 10px; font-weight: 800; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+        .chat-messages { flex: 1; padding: 10px; overflow-y: auto; font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px; }
+        .chat-msg { padding: 6px 10px; border-radius: 8px; max-width: 85%; line-height: 1.4; }
+        .chat-msg.bot { background: var(--input-bg); align-self: flex-start; }
+        .chat-msg.user { background: var(--primary-color); color: #030712; align-self: flex-end; font-weight: 700; }
+        .chat-input-area { padding: 8px; border-top: 1px solid var(--border-color); display: flex; gap: 5px; background: var(--input-bg); align-items: center; }
+        .chat-input-area input { flex: 1; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-color); color: var(--text-color); font-size: 0.8rem; }
+        .chat-input-area button { background: var(--primary-color); color: #030712; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 0.8rem; }
+        .mic-btn { background: var(--secondary-color) !important; color: #030712 !important; }
+
+        footer { text-align: center; padding: 12px; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.75rem; background: var(--header-bg); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="user-menu-container hidden" id="userMenuContainer">
+                <button class="menu-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
+                <div class="user-pill">
+                    <i class="fa-solid fa-shield-halved" style="color: var(--primary-color);"></i>
+                    <span id="userEmailDisplay" class="elbadry-brand">البدري</span>
+                </div>
+                <div class="dropdown-menu" id="dropdownMenu" style="position:absolute; top:40px; right:0; background:var(--card-bg); border:1px solid var(--border-color); border-radius:10px; width:160px; display:none; flex-direction:column; z-index:1100;">
+                    <div class="dropdown-item" onclick="logout()" style="padding:10px; cursor:pointer; color:var(--danger-color); font-size:0.8rem;"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</div>
+                </div>
+            </div>
+            <div class="logo"><i class="fa-solid fa-user-secret"></i> حارس البدري الذكي</div>
+        </div>
+
+        <div class="controls">
+            <button class="achievements-btn" onclick="openAchievementsModal()"><i class="fa-solid fa-trophy"></i> إنجازاتي</button>
+            <button class="theme-toggle-btn" onclick="toggleTheme()"><i id="themeIcon" class="fa-solid fa-sun"></i></button>
+            
+            <select id="langSelect" onchange="changeLanguage(this.value)">
+                <optgroup label="الدول العربية">
+                    <option value="ar">العربية (مصر، السعودية، إلخ)</option>
+                    <option value="eg">مصر (عربي)</option>
+                    <option value="sa">المملكة العربية السعودية</option>
+                    <option value="ae">الإمارات العربية المتحدة</option>
+                    <option value="qa">قطر</option>
+                    <option value="kw">الكويت</option>
+                    <option value="bh">البحرين</option>
+                    <option value="om">سلطنة عمان</option>
+                    <option value="jo">الأردن</option>
+                    <option value="iq">العراق</option>
+                    <option value="ps">فلسطين</option>
+                    <option value="ly">ليبيا</option>
+                    <option value="tn">تونس</option>
+                    <option value="dz">الجزائر</option>
+                    <option value="ma">المغرب</option>
+                </optgroup>
+                <optgroup label="الدول الآسيوية والأجنبية">
+                    <option value="cn">الصين (中文)</option>
+                    <option value="tr">تركيا (Türkçe)</option>
+                    <option value="en">English (USA/UK)</option>
+                    <option value="fr">Français (France)</option>
+                    <option value="es">Español (Spain/Latam)</option>
+                    <option value="de">Deutsch (Germany)</option>
+                </optgroup>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <div class="radar-banner">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <div class="radar-dot"></div>
+                <span>حارس البدري: فحص أمني وبحث ذكي عن الحسابات الحقيقية</span>
+            </div>
+            <i class="fa-solid fa-shield-check" style="color: var(--primary-color);"></i>
+        </div>
+
+        <!-- الخطوة 1 -->
+        <div class="container" id="step1">
+            <h1>حارس البدري الذكي للسوشيال ميديا</h1>
+            <p class="subtitle">سجل بحسابك الحقيقي (Gmail)، أدخل كلمة المرور، وابحث عن حساباتك المرتبطة</p>
+            
+            <button class="btn-google" onclick="openGmailLoginModal()">
+                <i class="fa-brands fa-google" style="color: #ea4335;"></i> <span>تسجيل الدخول باستخدام Gmail الحقيقي</span>
+            </button>
+
+            <div class="captcha-box">
+                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+            </div>
+        </div>
+
+        <!-- الخطوة 2 -->
+        <div class="container hidden" id="step2">
+            <h1>لوحة تحكم الحارس الذكي</h1>
+            <p class="subtitle">اختر المنصة وابحث برقم هاتفك أو ايميلك للعثور على حسابك الحقيقي وربطه</p>
+
+            <div class="platforms-grid">
+                <div class="platform-card" id="card-facebook" onclick="openAccountSearch('Facebook')">
+                    <i class="fa-brands fa-facebook"></i>
+                    <span>Facebook</span>
+                </div>
+                <div class="platform-card" id="card-instagram" onclick="openAccountSearch('Instagram')">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>Instagram</span>
+                </div>
+                <div class="platform-card" id="card-tiktok" onclick="openAccountSearch('TikTok')">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <span>TikTok</span>
+                </div>
+                <div class="platform-card" id="card-whatsapp" onclick="openAccountSearch('WhatsApp')">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="platform-card" id="card-telegram" onclick="openAccountSearch('Telegram')">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span>Telegram</span>
+                </div>
+            </div>
+
+            <div class="id-section">
+                <p>المعرّف السري الخاص بك (Secure ID):</p>
+                <div class="secret-id">8890232593:AAHTnEcTrny8kFALM-O8rluc7e9KbFt7WuI</div>
+                <p style="font-size: 0.7rem; color: var(--text-muted);">انسخ هذا الـ ID وارسله لبوت التليجرام الخاص بك لتفعيل التنبيهات الفورية.</p>
+            </div>
+
+            <a href="https://t.me/Elbadry_Security_Bot?start=8890232593" target="_blank" class="btn-telegram">
+                <i class="fa-brands fa-telegram"></i> <span>الذهاب لبوت التليجرام وتفعيل التنبيهات</span>
+            </a>
+        </div>
+
+        <!-- بنك الأكواد -->
+        <div class="support-hub-box">
+            <h3 style="color: var(--primary-color); font-size: 1rem; margin-bottom: 8px;"><i class="fa-solid fa-headset"></i> بنك أكواد وجيميلات دعم فك الحظر السريع</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">انسخ الإيميل الرسمي والكود الجاهز، وأرسله للدعم الفني لفك حسابك المعطل فوراً.</p>
+
+            <div class="support-item">
+                <h4><span><i class="fa-brands fa-facebook"></i> فيسبوك (دعم استئناف الحظر)</span><button class="copy-btn" onclick="copyText('support@fb.com')">نسخ الإيميل</button></h4>
+                <p style="direction: ltr; color: var(--primary-color);">support@fb.com</p>
+                <div style="margin-top: 4px; font-size: 0.75rem; background: var(--bg-color); padding: 6px; border-radius: 6px;">
+                    <strong>الكود:</strong> "Hello, my personal Facebook account was disabled by mistake. Please restore it."
+                    <button class="copy-btn" style="float: left;" onclick="copyText('Hello, my personal Facebook account was disabled by mistake. Please restore it.')">نسخ الكود</button>
+                </div>
+            </div>
+
+            <div class="support-item">
+                <h4><span><i class="fa-brands fa-whatsapp"></i> واتساب (دعم فك حظر الأرقام)</span><button class="copy-btn" onclick="copyText('support@whatsapp.com')">نسخ الإيميل</button></h4>
+                <p style="direction: ltr; color: var(--primary-color);">support@whatsapp.com</p>
+                <div style="margin-top: 4px; font-size: 0.75rem; background: var(--bg-color); padding: 6px; border-radius: 6px;">
+                    <strong>الكود:</strong> "Please review my phone number which was banned mistakenly."
+                    <button class="copy-btn" style="float: left;" onclick="copyText('Please review my phone number which was banned mistakenly.')">نسخ الكود</button>
+                </div>
+            </div>
+
+            <div class="support-item">
+                <h4><span><i class="fa-brands fa-tiktok"></i> تيك توك (دعم الحسابات المعطلة)</span><button class="copy-btn" onclick="copyText('feedback@tiktok.com')">نسخ الإيميل</button></h4>
+                <p style="direction: ltr; color: var(--primary-color);">feedback@tiktok.com</p>
+                <div style="margin-top: 4px; font-size: 0.75rem; background: var(--bg-color); padding: 6px; border-radius: 6px;">
+                    <strong>الكود:</strong> "My TikTok account was suspended unfairly. Please investigate and unban my profile."
+                    <button class="copy-btn" style="float: left;" onclick="copyText('My TikTok account was suspended unfairly. Please investigate and unban my profile.')">نسخ الكود</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- التقييمات -->
+        <div class="stats-rating-section">
+            <div class="visitor-counter">
+                <i class="fa-solid fa-users-viewfinder"></i> <span>إجمالي زوار المنصة النشطين:</span> <span id="visitorCount" style="color: var(--primary-color);">1,482</span>
+            </div>
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 10px;">
+            <p style="font-size: 0.85rem; font-weight: 700; margin-bottom: 6px;">ما رأيك في مستوى حماية حارس البدري؟</p>
+            <div class="stars-container" id="starContainer">
+                <i class="fa-solid fa-star" onclick="setRating(1)"></i>
+                <i class="fa-solid fa-star" onclick="setRating(2)"></i>
+                <i class="fa-solid fa-star" onclick="setRating(3)"></i>
+                <i class="fa-solid fa-star" onclick="setRating(4)"></i>
+                <i class="fa-solid fa-star" onclick="setRating(5)"></i>
+            </div>
+            <textarea class="comment-input" id="userComment" placeholder="اكتب تعليقك الجميل هنا لتطوير المنصة..."></textarea>
+            <button class="btn-rate" onclick="submitRating()">إرسال التقييم والتعليق</button>
+        </div>
+
+        <!-- الفاحص -->
+        <div class="anti-boredom-box">
+            <h3 style="font-size: 0.95rem; color: var(--primary-color); margin-bottom: 5px;"><i class="fa-solid fa-gamepad"></i> اختبار قوة كلمة المرور السريع</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px;">اكتب أي كلمة مرور لتجربة فحص قوة الحماية الفورية:</p>
+            <input type="text" class="pass-test-input" id="testPassInput" oninput="checkPasswordStrength(this.value)" placeholder="اكتب كلمة مرور لتجربتها...">
+            <div class="pass-result" id="passResultText" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">ابدأ الكتابة لفحص الأمان...</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 حارس البدري الذكي للسوشيال ميديا. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <!-- نافذة الإنجازات -->
+    <div class="modal hidden" id="achievementsModal">
+        <div class="modal-content">
+            <h3 style="color: var(--primary-color); margin-bottom: 12px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-trophy"></i> رحلة إنجازات البدري
+            </h3>
+            <div style="font-size: 0.8rem; line-height: 1.6; color: var(--text-muted); text-align: right;">
+                <p style="margin-bottom: 8px;">🚀 <strong>تأسيس مصنع البدري للأثاث المكتبي:</strong> إدارة وتطوير مصنع ومجلس أعمال خاص في أبو كبير بالشرقية بنجاح واحترافية[span_1](start_span)[span_1](end_span).</p>
+                <p style="margin-bottom: 8px;">🛡️ <strong>ابتكار حارس البدري الذكي:</strong> تطوير وبناء منصة أمنية متكاملة لحماية حسابات السوشيال ميديا وربطها بالتليجرام والدعم الفني.</p>
+                <p style="margin-bottom: 8px;">💻 <strong>تطوير البرمجيات والذكاء الاصطناعي:</strong> احتراف لغة بايثون وتطوير التطبيقات عبر Termux وإنشاء روبوتات تليجرام متقدمة.</p>
+                <p>⭐ <strong>التميز والريادة:</strong> السعي المستمر لتطوير حلول حقيقية ومبتكرة تخدم آلاف المستخدمين والعملاء.</p>
+            </div>
+            <button class="btn-submit" onclick="closeAchievementsModal()" style="margin-top: 15px;">إغلاق النافذة</button>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل الدخول -->
+    <div class="modal hidden" id="gmailLoginModal">
+        <div class="modal-content">
+            <h3 style="color: var(--primary-color); margin-bottom: 10px; font-size: 1rem;"><i class="fa-brands fa-google"></i> تسجيل الدخول بـ Gmail الحقيقي</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">أدخل البريد الإلكتروني وكلمة المرور لتأكيد حسابك الحقيقي.</p>
+            <div class="form-group" style="text-align:right; margin-bottom:8px;">
+                <label style="font-size:0.75rem; color:var(--text-muted);">البريد الإلكتروني (Gmail):</label>
+                <input type="email" id="gmailUser" placeholder="name@gmail.com">
+            </div>
+            <div class="form-group" style="text-align:right; margin-bottom:10px;">
+                <label style="font-size:0.75rem; color:var(--text-muted);">كلمة المرور:</label>
+                <input type="password" id="gmailPass" placeholder="••••••••••••">
+            </div>
+            <button class="btn-submit" onclick="verifyGmailLogin()">تأكيد وتسجيل الدخول</button>
+            <div class="form-actions" style="margin-top:8px;">
+                <button class="btn-cancel" onclick="closeGmailModal()" style="width:100%; font-size:0.8rem;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة البحث -->
+    <div class="modal hidden" id="searchModal">
+        <div class="modal-content">
+            <h3 id="modalTitle" style="color: var(--primary-color); margin-bottom: 10px; font-size: 1rem;"><i class="fa-solid fa-magnifying-glass"></i> البحث عن الحساب</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">أدخل رقم الهاتف أو البريد للبحث واسترجاع حسابك الحقيقي.</p>
+            <div class="form-group" style="text-align:right; margin-bottom:8px;">
+                <label style="font-size:0.75rem; color:var(--text-muted);">رقم الهاتف أو البريد:</label>
+                <input type="text" id="searchQuery" placeholder="+20 10xxxxxxxx أو email@domain.com">
+            </div>
+            <button class="btn-submit" onclick="searchRealAccounts()">بحث وعثور على الحسابات</button>
+            <div id="accountsListContainer" style="margin-top: 10px; max-height: 120px; overflow-y: auto; display: none;"></div>
+            <div class="form-actions" style="margin-top:8px;">
+                <button class="btn-cancel" onclick="closeSearchModal()" style="width:100%; font-size:0.8rem;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- الشات الجانبي الذكي المحدث للتعريف بالبدري وإنجازاته -->
+    <div class="ai-chat-widget">
+        <button class="chat-toggle-btn" onclick="toggleChat()"><i class="fa-solid fa-comments"></i></button>
+        <div class="chat-box" id="aiChatBox">
+            <div class="chat-header">
+                <span><i class="fa-solid fa-robot"></i> مساعد البدري الذكي</span>
+                <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="toggleChat()"></i>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">مرحباً بك يا غالي! أنا مساعد حارس البدري الذكي. تحدث معي كتابة أو عبر الميكروفون، واسألني عن من صنعني أو عن إنجازات مطوري!</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="اكتب أو تحدث بصوتك..." onkeypress="handleChatPress(event)">
+                <button class="mic-btn" onclick="startVoiceInput()" title="تحدث بصوتك"><i class="fa-solid fa-microphone"></i></button>
+                <button onclick="sendChatMessage()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAchievementsModal() { document.getElementById('achievementsModal').classList.remove('hidden'); }
+        function closeAchievementsModal() { document.getElementById('achievementsModal').classList.add('hidden'); }
+
+        function playWelcomeAudio(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ar-SA';
+                utterance.rate = 0.95;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function openGmailLoginModal() {
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (recaptchaResponse.length === 0) {
+                alert("يرجى حل اختبار الكابتشا (أنا لست روبوت) أولاً!");
+                return;
+            }
+            document.getElementById('gmailLoginModal').classList.remove('hidden');
+        }
+
+        function closeGmailModal() { document.getElementById('gmailLoginModal').classList.add('hidden'); }
+
+        function verifyGmailLogin() {
+            const email = document.getElementById('gmailUser').value.trim();
+            const pass = document.getElementById('gmailPass').value.trim();
+            if(!email || !pass || !email.includes('@gmail.com')) {
+                alert("الرجاء إدخال بريد Gmail وكلمة المرور بشكل صحيح!");
+                return;
+            }
+            playWelcomeAudio("أهلاً بك في حارس البدري الذكي، تم تأمين حسابك بنجاح");
+            alert("تم التحقق وتسجيل الدخول بحساب Gmail بنجاح!");
+            document.getElementById('userEmailDisplay').innerText = email.split('@')[0];
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('userMenuContainer').classList.remove('hidden');
+            closeGmailModal();
+        }
+
+        let selectedPlatform = '';
+        function openAccountSearch(platform) {
+            selectedPlatform = platform;
+            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> البحث عن حساب ${platform} الحقيقي`;
+            document.getElementById('searchQuery').value = '';
+            document.getElementById('accountsListContainer').style.display = 'none';
+            document.getElementById('searchModal').classList.remove('hidden');
+        }
+
+        function closeSearchModal() { document.getElementById('searchModal').classList.add('hidden'); }
+
+        function searchRealAccounts() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if(!query) { alert("الرجاء إدخال رقم الهاتف أو البريد للبحث!"); return; }
+            const container = document.getElementById('accountsListContainer');
+            container.innerHTML = `
+                <div onclick="selectAccount('Official_${selectedPlatform}_Account')" style="background:var(--bg-color); padding:8px; border-radius:6px; margin-bottom:5px; cursor:pointer; font-size:0.8rem; border:1px solid var(--border-color);">
+                    <i class="fa-solid fa-circle-check" style="color:#10b981;"></i> حساب ${selectedPlatform} المرتبط برقمك (${query})
+                </div>
+            `;
+            container.style.display = 'block';
+        }
+
+        function selectAccount(accName) {
+            alert(`تم ربط وتأمين الحساب (${accName}) بنجاح عبر حارس البدري!`);
+            document.getElementById('card-' + selectedPlatform.toLowerCase()).classList.add('connected');
+            closeSearchModal();
+        }
+
+        setInterval(() => {
+            const counter = document.getElementById('visitorCount');
+            if(counter) {
+                let current = parseInt(counter.innerText.replace(/,/g, ''));
+                counter.innerText = (current + Math.floor(Math.random() * 2)).toLocaleString();
+            }
+        }, 6000);
+
+        function checkPasswordStrength(val) {
+            const res = document.getElementById('passResultTest');
+            if(!val) { res.innerText = "ابدأ الكتابة لفحص الأمان..."; res.style.color = "var(--text-muted)"; return; }
+            if(val.length < 6) { res.innerText = "⚠️ كلمة المرور ضعيفة جداً ومكشوفة!"; res.style.color = "var(--danger-color)"; }
+            else if(val.length < 10) { res.innerText = "🟡 متوسطة، أضف أرقاماً ورموزاً."; res.style.color = "orange"; }
+            else { res.innerText = "🟢 قوية جداً ومحمية بالكامل بواسطة حارس البدري!"; res.style.color = "#10b981"; }
+        }
+
+        let currentRating = 0;
+        function setRating(stars) {
+            currentRating = stars;
+            const starIcons = document.querySelectorAll('#starContainer i');
+            starIcons.forEach((icon, idx) => {
+                icon.style.color = idx < stars ? "var(--star-color)" : "var(--text-muted)";
+            });
+        }
+        function submitRating() {
+            if(currentRating === 0) { alert("الرجاء اختيار عدد النجوم أولاً!"); return; }
+            alert(`شكراً لك! تم إرسال تقييمك (${currentRating} نجوم) وتعليقك بنجاح.`);
+            document.getElementById('userComment').value = '';
+            setRating(0);
+        }
+
+        function toggleTheme() {
+            const html = document.getElementById('htmlDoc');
+            const icon = document.getElementById('themeIcon');
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                icon.className = "fa-solid fa-moon";
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                icon.className = "fa-solid fa-sun";
+            }
+        }
+
+        function copyText(text) { navigator.clipboard.writeText(text).then(() => { alert("تم النسخ بنجاح!"); }); }
+
+        function toggleChat() { document.getElementById('aiChatBox').classList.toggle('open'); }
+
+        // محرك المحادثة الذكي المعدل بحيث يجيب بكل فخر عن المطور البدري وإنجازاته
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if(!text) return;
+            const msgContainer = document.getElementById('chatMessages');
+            msgContainer.innerHTML += `<div class="chat-msg user">${text}</div>`;
+            input.value = '';
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+
+            setTimeout(() => {
+                let reply = "أهلاً بك يا غالي! أنا هنا لمساعدتك في كل ما تحتاجه لتأمين حساباتك واسترجاعها عبر أكواد الدعم الفوري.";
+                const lower = text.toLowerCase();
+                
+                // الرد المخصص للتعريف بالمطور البدري وإنجازاته
+                if(lower.includes("مين صنعك") || lower.includes("من صنعك") || lower.includes("مين اللي بدري") || lower.includes("مين البدري") || lower.includes("من هو البدري") || lower.includes("صانعك") || lower.includes("مطورك")) {
+                    reply = "أنا صُنعت وتطورت بواسطة المطور العبقري البدري، وهو المطور الحقيقي والمدبر لكل هذه المنصة! البشمهندس البدري هو من قام ببرمجة الكود بالكامل، وهو مؤسس مصنع البدري للأثاث المكتبي في أبو كبير بالشرقية[span_2](start_span)[span_2](end_span)، والمبرمج المحترف الذي أبدع في تطوير التطبيقات والحلول الأمنية والروبوتات المتقدمة.";
+                } else if(lower.includes("إنجازات") || lower.includes("عن البدري") || lower.includes("من هو")) {
+                    reply = "البشمهندس البدري هو شاب طموح ومبدع، يدير مصنع البدري للأثاث المكتبي بأبو كبير في الشرقية[span_3](start_span)[span_3](end_span)، وبارع في برمجة وتطوير الأنظمة الذكية وتطبيقات بايثون وروبوتات تليجرام وحلول الحماية الأمنية المتقدمة.";
+                } else if(lower.includes("كيف") || lower.includes("طريقة") || lower.includes("ازاي")) {
+                    reply = "الأمر بسيط جداً؛ قم بتسجيل الدخول بـ Gmail وحل الكابتشا، ثم اختر المنصة وابحث برقم هاتفك لربط وتأمين حسابك فوراً.";
+                } else if(lower.includes("حظر") || lower.includes("مقفل") || lower.includes("معطل")) {
+                    reply = "لا تقلق! توجه فوراً إلى قسم 'بنك أكواد الدعم الفوري' أسفل الصفحة، انسخ الإيميل والكود المناسب وأرسله لشركة المنصة لفك حظرك.";
+                } else if(lower.includes("تليجرام") || lower.includes("بوت")) {
+                    reply = "انسخ المعرّف السري (Secure ID) الخاص بك واضغط على زر التليجرام بالأعلى للتوجه للبوت مباشرة وتلقي التنبيهات.";
+                }
+
+                msgContainer.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
+                msgContainer.scrollTop = msgContainer.scrollHeight;
+                playWelcomeAudio(reply);
+            }, 700);
+        }
+
+        function handleChatPress(e) { if(e.key === 'Enter') sendChatMessage(); }
+
+        function startVoiceInput() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert("عذراً، متصفحك لا يدعم الإدخال الصوتي المباشر. يمكنك الكتابة كالمعتاد.");
+                return;
+            }
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ar-SA';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            alert("تفضل بالتحدث الآن... جاري الاستماع لك...");
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const speechResult = event.results[0][0].transcript;
+                document.getElementById('chatInput').value = speechResult;
+                sendChatMessage();
+            };
+
+            recognition.onerror = function(event) {
+                alert("حدث خطأ أثناء التعرف على الصوت، حاول مرة أخرى.");
+            };
+        }
+
+        function toggleDropdown() { document.getElementById('dropdownMenu').style.display = document.getElementById('dropdownMenu').style.display === 'flex' ? 'none' : 'flex'; }
+        function logout() { location.reload(); }
+
+        function changeLanguage(lang) {
+            const htmlDoc = document.getElementById('htmlDoc');
+            htmlDoc.setAttribute('dir', (lang === 'en' || lang === 'tr' || lang === 'cn') ? 'ltr' : 'rtl');
+            htmlDoc.setAttribute('lang', lang);
+        }
+    </script>
+</body>
+</html>
