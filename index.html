@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlDoc">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elbadry Security Hub - بوابة البدري</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- مكتبة Google reCAPTCHA الرسمية الحقيقية -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
+    <style>
+        :root {
+            --bg-color: #030712; /* أسود عميق نقي */
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-color: #00ffcc; /* أخضر نيون منور */
+            --secondary-color: #00d2ff; /* أزرق نيون منور */
+            --primary-glow: rgba(0, 255, 204, 0.4);
+            --secondary-glow: rgba(0, 210, 255, 0.4);
+            --border-color: rgba(0, 255, 204, 0.3);
+            --input-bg: rgba(30, 41, 59, 0.6);
+            --danger-color: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 10%, rgba(0, 210, 255, 0.05) 0%, transparent 50%);
+        }
+
+        /* شريط التوب بار */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(3, 7, 18, 0.9);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* اسم البدري المضيء في اللوحة */
+        .elbadry-brand {
+            color: var(--primary-color);
+            font-weight: 900;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* زر الثلاث شرط وبروفايل الحساب */
+        .user-menu-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-pill {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+        }
+
+        .menu-btn {
+            background: var(--input-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .menu-btn:hover {
+            background: var(--primary-color);
+            color: #030712;
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        /* القائمة المنسدلة للثلاث شرط */
+        .dropdown-menu {
+            position: absolute;
+            top: 55px;
+            left: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 230px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(20px);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        [dir="rtl"] .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+
+        .dropdown-menu.show {
+            display: flex;
+        }
+
+        .dropdown-item {
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+            color: var(--danger-color);
+        }
+
+        .dropdown-item:hover {
+            background: rgba(0, 255, 204, 0.1);
+            color: var(--primary-color);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        select {
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* حاوية المحتوى الرئيسي */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0, 255, 204, 0.1);
+            backdrop-filter: blur(20px);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .btn-google {
+            background: #ffffff;
+            color: #030712;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 5px 20px rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .btn-google:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.3);
+        }
+
+        .captcha-box {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .platform-card {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .platform-card:hover, .platform-card.connected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(-3px);
+        }
+
+        /* تخصيص الأيقونات الحقيقية الأصلية لكل منصة بلونها الرسمي والنيون */
+        .platform-card i.fa-facebook { color: #1877f2; }
+        .platform-card i.fa-instagram { color: #e4405f; }
+        .platform-card i.fa-tiktok { color: #ff0050; }
+        .platform-card i.fa-telegram { color: #229ed9; }
+
+        .platform-card i {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));
+        }
+
+        .id-section {
+            background: var(--input-bg);
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 15px rgba(0, 255, 204, 0.05);
+        }
+
+        .secret-id {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            margin: 10px 0;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc, #229ed9);
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            box-shadow: 0 5px 25px rgba(34, 158, 217, 0.4);
+            transition: 0.3s;
+        }
+
+        .btn-telegram:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 158, 217, 0.6);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: rgba(3, 7, 18, 0.9);
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+            text-shadow: 0 0 5px var(--primary-glow);
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal سياسة الخصوصية */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: right;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.2);
+        }
+
+        [dir="en"] .modal-content { text-align: left; }
+
+        .close-modal {
+            background: var(--primary-color);
+            color: #030712;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            margin-top: 20px;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <!-- زر الـ 3 شرط ويظهر فقط بعد تسجيل الدخول -->
+            <div class="user-menu-container hidden" id="userMenuContainer">
+                <button class="menu-btn" onclick="toggleDropdown()"><i class="fa-solid fa-bars"></i></button>
+                <div class="user-pill">
+                    <i class="fa-solid fa-user-shield" style="color: var(--primary-color);"></i>
+                    <span id="userEmailDisplay" class="elbadry-brand">البدري (المدير)</span>
+                </div>
+                <!-- القائمة المنسدلة للثلاث شرط -->
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-item" onclick="addAnotherAccount()">
+                        <i class="fa-solid fa-user-plus"></i> <span data-i18n="add_account">إضافة حساب إضافي</span>
+                    </div>
+                    <div class="dropdown-item" onclick="logout()">
+                        <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="logout">تسجيل الخروج</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="logo">
+                <i class="fa-solid fa-shield-halved"></i> Elbadry Security Hub
+            </div>
+        </div>
+
+        <div class="controls">
+            <!-- قائمة اللغات العالمية -->
+            <select id="langSelect" onchange="changeLanguage(this.value)">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="ru">Русский</option>
+                <option value="zh">中文</option>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <!-- الخطوة 1: تسجيل الدخول والكابتشا الحقيقية -->
+        <div class="container" id="step1">
+            <h1 data-i18n="welcome_title">أهلاً بك في بوابة البدري للأمن الذكي</h1>
+            <p class="subtitle" data-i18n="welcome_sub">سجل بحسابك الحقيقي للبدء في ربط حسابات السوشيال ميديا وحمايتها بلحظتها</p>
+            
+            <!-- زر جوجل بالحرف والأيقونة الحقيقية -->
+            <button class="btn-google" onclick="verifyCaptchaAndLogin()">
+                <i class="fa-brands fa-google" style="color: #ea4335;"></i> <span data-i18n="google_login">المتابعة باستخدام Google</span>
+            </button>
+
+            <!-- عنصر الكابتشا الحقيقي (Google reCAPTCHA Widget) -->
+            <div class="captcha-box">
+                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+            </div>
+        </div>
+
+        <!-- الخطوة 2: لوحة التحكم والربط -->
+        <div class="container hidden" id="step2">
+            <h1 data-i18n="hub_title">لوحة تحكم البدري والربط الآمن</h1>
+            <p class="subtitle" data-i18n="hub_sub">قم بربط حساباتك وتفعيل الحماية اللحظية الذكية</p>
+
+            <div class="platforms-grid">
+                <div class="platform-card" onclick="connectPlatform(this)">
+                    <i class="fa-brands fa-facebook"></i>
+                    <span>Facebook</span>
+                </div>
+                <div class="platform-card" onclick="connectPlatform(this)">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>Instagram</span>
+                </div>
+                <div class="platform-card" onclick="connectPlatform(this)">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <span>TikTok</span>
+                </div>
+                <div class="platform-card" onclick="connectPlatform(this)">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span>Telegram</span>
+                </div>
+            </div>
+
+            <div class="id-section">
+                <p data-i18n="your_id_label">المعرّف السري الخاص بك (Secure ID):</p>
+                <div class="secret-id">8890232593:AAHTnEcTrny8kFALM-O8rluc7e9KbFt7WuI</div>
+                <p style="font-size: 0.85rem; color: var(--text-muted);" data-i18n="id_hint">انسخ هذا الـ ID واضغط على الزر أدناه لبدء التفاعل مع بوت التليجرام الخاص بك.</p>
+            </div>
+
+            <!-- زر التليجرام المباشر المتصل بالبوت الحقيقي -->
+            <a href="https://t.me/YourBotUsername" target="_blank" class="btn-telegram">
+                <i class="fa-brands fa-telegram fa-lg"></i> <span data-i18n="telegram_btn">الذهاب لبوت التليجرام وتفعيل المتابعة</span>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Elbadry Security Hub. <span data-i18n="rights">جميع الحقوق محفوظة.</span> 
+           <a href="#" onclick="openPrivacyModal()" data-i18n="privacy_link">سياسة الخصوصية</a>
+        </p>
+    </footer>
+
+    <!-- Modal سياسة الخصوصية -->
+    <div class="modal hidden" id="privacyModal">
+        <div class="modal-content">
+            <h2 style="color: var(--primary-color); margin-bottom: 15px;" data-i18n="privacy_title">سياسة الخصوصية وحماية البيانات</h2>
+            <p style="line-height: 1.8; color: var(--text-muted); font-size: 0.95rem;" data-i18n="privacy_body">
+                نحن في بوابة البدري (Elbadry Security Hub) نولي أهمية قصوى لخصوصية مستخدمينا وأمان حساباتهم. يتم جمع البريد الإلكتروني حصرياً لغرض المصادقة والتأكيد عبر Google OAuth. يتم تشفير كافة بيانات ربط منصات التواصل الاجتماعي وتخزينها بأعلى معايير الأمان. لا نقوم بمشاركة أي بيانات شخصية مع أي أطراف ثالثة، وتستخدم الصلاحيات الممنوحة فقط لأغراض المراقبة والحماية الفورية وحذف التعليقات المسيئة بناءً على طلب المستخدم عبر معرّفه الخاص على تليجرام.
+            </p>
+            <button class="close-modal" onclick="closePrivacyModal()" data-i18n="close_btn">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- قاموس اللغات والتفاعلات البرمجية -->
+    <script>
+        const translations = {
+            ar: {
+                welcome_title: "أهلاً بك في بوابة البدري للأمن الذكي",
+                welcome_sub: "سجل بحسابك الحقيقي للبدء في ربط حسابات السوشيال ميديا وحمايتها بلحظتها",
+                google_login: "المتابعة باستخدام Google",
+                hub_title: "لوحة تحكم البدري والربط الآمن",
+                hub_sub: "قم بربط حساباتك وتفعيل الحماية اللحظية الذكية",
+                your_id_label: "المعرّف السري الخاص بك (Secure ID):",
+                id_hint: "انسخ هذا الـ ID واضغط على الزر أدناه لبدء التفاعل مع بوت التليجرام الخاص بك.",
+                telegram_btn: "الذهاب لبوت التليجرام وتفعيل المتابعة",
+                rights: "جميع الحقوق محفوظة.",
+                privacy_link: "سياسة الخصوصية",
+                privacy_title: "سياسة الخصوصية وحماية البيانات",
+                privacy_body: "نحن في بوابة البدري (Elbadry Security Hub) نولي أهمية قصوى لخصوصية مستخدمينا وأمان حساباتهم. يتم جمع البريد الإلكتروني حصرياً لغرض المصادقة والتأكيد عبر Google OAuth. يتم تشفير كافة بيانات ربط منصات التواصل الاجتماعي وتخزينها بأعلى معايير الأمان.",
+                close_btn: "إغلاق",
+                add_account: "إضافة حساب إضافي",
+                logout: "تسجيل الخروج"
+            },
+            en: {
+                welcome_title: "Welcome to Elbadry Security Hub",
+                welcome_sub: "Sign in with your real account to connect and protect your social media instantly",
+                google_login: "Continue with Google",
+                hub_title: "Elbadry Dashboard & Secure Hub",
+                hub_sub: "Connect your accounts and enable instant smart protection",
+                your_id_label: "Your Unique Secure ID:",
+                id_hint: "Copy this ID and click the button below to interact with your Telegram bot.",
+                telegram_btn: "Go to Telegram Bot & Activate Monitoring",
+                rights: "All rights reserved.",
+                privacy_link: "Privacy Policy",
+                privacy_title: "Privacy Policy & Data Protection",
+                privacy_body: "At Elbadry Security Hub, we prioritize user privacy and account security. Emails are collected exclusively for Google OAuth authentication.",
+                close_btn: "Close",
+                add_account: "Add Another Account",
+                logout: "Log Out"
+            },
+            fr: {
+                welcome_title: "Bienvenue sur Elbadry Security Hub",
+                welcome_sub: "Connectez-vous pour sécuriser vos réseaux instantanément",
+                google_login: "Continuer avec Google",
+                hub_title: "Panneau de Contrôle Elbadry",
+                hub_sub: "Connectez vos comptes et activez la protection instantanée",
+                your_id_label: "Votre ID Sécurisé Unique :",
+                id_hint: "Copiez cet ID et cliquez ci-dessous pour interagir avec le bot.",
+                telegram_btn: "Aller sur le Bot Telegram",
+                rights: "Tous droits réservés.",
+                privacy_link: "Politique de Confidentialité",
+                privacy_title: "Politique de Confidentialité",
+                privacy_body: "Chez Elbadry Security Hub, nous accordons la priorité absolue à la confidentialité.",
+                close_btn: "Fermer",
+                add_account: "Ajouter un autre compte",
+                logout: "Déconnexion"
+            },
+            es: {
+                welcome_title: "Bienvenido a Elbadry Security Hub",
+                welcome_sub: "Inicia sesión para proteger tus redes sociales",
+                google_login: "Continuar con Google",
+                hub_title: "Panel de Control Elbadry",
+                hub_sub: "Conecta tus cuentas y activa la protección instantánea",
+                your_id_label: "Tu ID Seguro Único:",
+                id_hint: "Copia este ID y haz clic abajo para ir al bot de Telegram.",
+                telegram_btn: "Ir al Bot de Telegram",
+                rights: "Todos los derechos reservados.",
+                privacy_link: "Política de Privacidad",
+                privacy_title: "Política de Privacidad",
+                privacy_body: "En Elbadry Security Hub priorizamos la privacidad del usuario.",
+                close_btn: "Cerrar",
+                add_account: "Añadir otra cuenta",
+                logout: "Cerrar sesión"
+            },
+            de: {
+                welcome_title: "Willkommen beim Elbadry Security Hub",
+                welcome_sub: "Melden Sie sich an, um Ihre Konten zu schützen",
+                google_login: "Mit Google fortfahren",
+                hub_title: "Elbadry Steuerpult",
+                hub_sub: "Verbinden Sie Ihre Konten",
+                your_id_label: "Ihre sichere ID:",
+                id_hint: "Kopieren Sie diese ID und öffnen Sie den Bot.",
+                telegram_btn: "Zum Telegram Bot",
+                rights: "Alle Rechte vorbehalten.",
+                privacy_link: "Datenschutz",
+                privacy_title: "Datenschutzbestimmungen",
+                privacy_body: "Wir legen großen Wert auf die Privatsphäre.",
+                close_btn: "Schließen",
+                add_account: "Anderes Konto hinzufügen",
+                logout: "Abmelden"
+            },
+            ru: {
+                welcome_title: "Добро пожаловать в Elbadry Security Hub",
+                welcome_sub: "Войдите, чтобы защитить свои социальные сети",
+                google_login: "Продолжить с Google",
+                hub_title: "Панель управления Elbadry",
+                hub_sub: "Подключите свои аккаунты",
+                your_id_label: "Ваш уникальный ID:",
+                id_hint: "Скопируйте этот ID и перейдите в бота.",
+                telegram_btn: "Перейти в Telegram-бот",
+                rights: "Все права защищены.",
+                privacy_link: "Политика конфиденциальности",
+                privacy_title: "Политика конфиденциальности",
+                privacy_body: "Мы уделяем первостепенное внимание конфиденциальности.",
+                close_btn: "Закрыть",
+                add_account: "Добавить аккаунт",
+                logout: "Выйти"
+            },
+            zh: {
+                welcome_title: "欢迎来到 Elbadry 安全中心",
+                welcome_sub: "登录以立即保护您的社交媒体",
+                google_login: "使用 Google 登录",
+                hub_title: "Elbadry 控制面板",
+                hub_sub: "连接您的账户并启用保护",
+                your_id_label: "您的专属安全 ID：",
+                id_hint: "复制此 ID 并点击下方按钮前往 Telegram 机器人。",
+                telegram_btn: "前往 Telegram 机器人",
+                rights: "版权所有。",
+                privacy_link: "隐私政策",
+                privacy_title: "隐私政策与数据保护",
+                privacy_body: "在 Elbadry Security Hub，我们高度重视用户的隐私。",
+                close_btn: "关闭",
+                add_account: "添加其他账号",
+                logout: "退出登录"
+            }
+        };
+
+        function verifyCaptchaAndLogin() {
+            // التحقق من كابتشا جوجل الحقيقية
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (recaptchaResponse.length === 0) {
+                alert(currentLang === 'ar' ? "يرجى حل اختبار الكابتشا (أنا لست روبوت) أولاً!" : "Please complete the reCAPTCHA verification first!");
+                return;
+            }
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('userMenuContainer').classList.remove('hidden');
+        }
+
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('show');
+        }
+
+        function addAnotherAccount() {
+            alert(currentLang === 'ar' ? "جاري توجيهك لربط حساب إضافي..." : "Redirecting to add another account...");
+            toggleDropdown();
+        }
+
+        function logout() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('userMenuContainer').classList.add('hidden');
+            document.getElementById('dropdownMenu').classList.remove('show');
+            grecaptcha.reset(); // إعادة تعيين الكابتشا عند الخروج
+        }
+
+        function connectPlatform(card) {
+            card.classList.toggle('connected');
+        }
+
+        let currentLang = 'ar';
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const htmlDoc = document.getElementById('htmlDoc');
+            if (lang === 'ar') {
+                htmlDoc.setAttribute('dir', 'rtl');
+                htmlDoc.setAttribute('lang', 'ar');
+            } else {
+                htmlDoc.setAttribute('dir', 'ltr');
+                htmlDoc.setAttribute('lang', lang);
+            }
+
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+        }
+
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').classList.remove('hidden');
+        }
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').classList.add('hidden');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-menu-container')) {
+                const dropdown = document.getElementById('dropdownMenu');
+                if (dropdown && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
