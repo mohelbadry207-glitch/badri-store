@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIESEL AI STUDIO | Create Video</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-app: #0b0f12;
+            --bg-sidebar: #0e1318;
+            --bg-surface: #131920;
+            --bg-card: #182029;
+            --bg-input: #0d1217;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-active: #14d8c4;
+            --teal: #14d8c4;
+            --teal-dark: #0eb5a4;
+            --gold: #f5b041;
+            --danger: #ff4d6d;
+            --text: #eef3f7;
+            --muted: #8896a6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-app);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            height: 58px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            position: sticky;
+            top: 0;
+            z-index: 120;
+            gap: 10px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        .brand-mark {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--teal), var(--gold));
+            color: #071012;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pill-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .pill-btn:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+
+        .upgrade-btn {
+            background: var(--teal);
+            color: #061012;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* 3-Column Studio Layout */
+        .app-shell {
+            display: grid;
+            grid-template-columns: 220px 1fr 320px;
+            min-height: calc(100vh - 58px);
+            width: 100%;
+        }
+
+        @media (max-width: 1150px) {
+            .app-shell {
+                grid-template-columns: 200px 1fr;
+            }
+            .right-panel {
+                grid-column: 1 / -1;
+                border-right: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 780px) {
+            .app-shell {
+                grid-template-columns: 1fr;
+            }
+            .left-sidebar {
+                border-left: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        /* Left Sidebar */
+        .left-sidebar {
+            background: var(--bg-sidebar);
+            border-left: 1px solid var(--border);
+            padding: 14px 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: transparent;
+            text-align: right;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: rgba(20, 216, 196, 0.12);
+            border-color: rgba(20, 216, 196, 0.3);
+            color: var(--teal);
+        }
+
+        .credits-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .credits-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .promo-card {
+            background: linear-gradient(160deg, rgba(20, 216, 196, 0.14), rgba(245, 176, 65, 0.08));
+            border: 1px solid rgba(20, 216, 196, 0.28);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .promo-card h4 {
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .promo-card p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .promo-btn {
+            background: var(--teal);
+            color: #061012;
+            border: none;
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 12px;
+            font-weight: 900;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        /* Center Canvas Area */
+        .center-stage {
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: var(--bg-app);
+        }
+
+        .stage-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stage-head h1 {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .stage-head p {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .panel-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .box-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 105px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            color: var(--text);
+            font-size: 13px;
+            resize: vertical;
+            outline: none;
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            border-color: var(--teal);
+        }
+
+        .prompt-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 5px 10px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .chip:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+
+        .ref-dropzone {
+            border: 1px dashed rgba(255, 255, 255, 0.16);
+            background: var(--bg-input);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--muted);
+            transition: 0.2s;
+        }
+
+        .ref-dropzone:hover {
+            border-color: var(--teal);
+            color: var(--text);
+        }
+
+        .voice-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .voice-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        select, input[type="text"] {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 8px 10px;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            outline: none;
+            width: 100%;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--teal);
+        }
+
+        .action-mini-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 10px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .action-mini-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .action-mini-btn.recording {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(255, 77, 109, 0.12);
+        }
+
+        /* Viewport + Creations */
+        .viewport-box {
+            background: #06090c;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            max-height: 420px;
+            display: none;
+            background: #000;
+        }
+
+        canvas#renderCanvas {
+            display: none;
+        }
+
+        .render-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(7, 10, 14, 0.92);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px;
+            text-align: center;
+            z-index: 20;
+        }
+
+        .bar-track {
+            width: 100%;
+            max-width: 300px;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--teal), var(--gold));
+            transition: width 0.25s;
+        }
+
+        .creations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+            gap: 12px;
+        }
+
+        .creation-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .creation-card:hover {
+            border-color: var(--teal);
+        }
+
+        .creation-thumb {
+            height: 92px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(20, 216, 196, 0.18), rgba(245, 176, 65, 0.14));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .creation-title {
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .creation-sub {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        /* Right Settings Panel */
+        .right-panel {
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .model-option {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .model-option.selected {
+            border-color: var(--teal);
+            background: rgba(20, 216, 196, 0.09);
+        }
+
+        .model-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .model-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(20, 216, 196, 0.14);
+            color: var(--teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        .model-name {
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .model-desc {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .choice-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 8px 6px;
+            color: var(--text);
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .choice-btn.active {
+            border-color: var(--teal);
+            color: var(--teal);
+            background: rgba(20, 216, 196, 0.12);
+        }
+
+        .guard-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(20, 216, 196, 0.25);
+            border-radius: 11px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .guard-inline {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .verify-mini {
+            background: rgba(20, 216, 196, 0.16);
+            border: 1px solid var(--teal);
+            color: var(--teal);
+            border-radius: 8px;
+            padding: 7px 10px;
+            font-size: 11px;
+            font-weight: 900;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .verify-mini.ok {
+            background: rgba(46, 204, 113, 0.16);
+            border-color: #2ecc71;
+            color: #2ecc71;
+        }
+
+        .generate-main-btn {
+            background: var(--teal);
+            color: #061012;
+            border: none;
+            border-radius: 11px;
+            padding: 13px;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .generate-main-btn:hover {
+            background: var(--teal-dark);
+        }
+
+        .generate-main-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .app-footer {
+            background: var(--bg-sidebar);
+            border-top: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .footer-actions button, .footer-actions a {
+            background: none;
+            border: none;
+            color: var(--teal);
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* Modal & Ban */
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 7, 10, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            padding: 16px;
+        }
+
+        .modal-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-card h2 {
+            font-size: 18px;
+            color: var(--teal);
+        }
+
+        .modal-card p, .modal-card li {
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .modal-card ul {
+            padding-right: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .ban-box {
+            display: none;
+            margin: 48px auto;
+            max-width: 480px;
+            background: rgba(30, 10, 16, 0.92);
+            border: 1px solid rgba(255, 77, 109, 0.5);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            gap: 12px;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="brand">
+        <div class="brand-mark">D</div>
+        <span>DIESEL AI STUDIO</span>
+    </div>
+    <div class="topbar-right">
+        <a class="pill-btn" id="topTgBtn" href="https://t.me/share/url?url=https://github.com" target="_blank">💬 شات تليجرام</a>
+        <button class="pill-btn" onclick="openPrivacy()">📜 سياسة الخصوصية</button>
+        <a class="upgrade-btn" id="topUpgradeTg" href="https://t.me/share/url?url=https://github.com" target="_blank">تواصل مباشر</a>
+    </div>
+</div>
+
+<div class="ban-box" id="banScreen">
+    <h2 style="color: var(--danger);">🚫 تم حظر الوصول تلقائياً</h2>
+    <p style="color: var(--muted);">تم رصد سلوك آلي أو محاولة تجاوز للتحقق البشري وتم حظر هذا المتصفح.</p>
+</div>
+
+<div class="app-shell" id="mainShell">
+    <!-- العمود الأيمن/اليسار: قائمة التنقل والرصيد -->
+    <aside class="left-sidebar">
+        <div class="nav-list">
+            <button class="nav-item active" onclick="setActiveNav(this, 'create')">🏠 الرئيسية • Create</button>
+            <button class="nav-item" onclick="setActiveNav(this, 'templates')">🗂️ القوالب • Templates</button>
+            <button class="nav-item" onclick="setActiveNav(this, 'assets')">🎞️ الأصوات والمراجع</button>
+            <button class="nav-item" onclick="setActiveNav(this, 'creations')">📁 أعمالي • Creations</button>
+            <button class="nav-item" onclick="openPrivacy()">🛡️ الخصوصية والحماية</button>
+            <a class="nav-item" id="sideTgLink" href="https://t.me/share/url?url=https://github.com" target="_blank">💬 شات تليجرام</a>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="credits-box">
+                <div class="credits-row">
+                    <span style="color: var(--muted);">حالة الحماية</span>
+                    <span id="guardStatusText" style="color: var(--teal);">نشطة</span>
+                </div>
+                <div class="credits-row">
+                    <span style="color: var(--muted);">الفيديوهات المُولّدة</span>
+                    <span id="createdCountBadge" style="color: var(--gold);">0</span>
+                </div>
+            </div>
+
+            <div class="promo-card">
+                <h4>استوديو البدري للفيديو</h4>
+                <p>حركة فم وعينين وصوت للشخصيات والفاكهة والكارتون مع إشعارات فورية.</p>
+                <a class="promo-btn" id="promoTgBtn" href="https://t.me/share/url?url=https://github.com" target="_blank">فتح محادثة تليجرام</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- العمود الأوسط: Prompt + Reference + Voice + Preview + Creations -->
+    <main class="center-stage">
+        <div class="stage-head">
+            <div>
+                <h1>Create Video</h1>
+                <p>حوّل أفكارك وشخصياتك إلى فيديوهات بحركة الفم والعينين والصوت</p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="pill-btn" onclick="inspirePrompt()">✨ Inspire Me</button>
+                <button class="pill-btn" onclick="enhancePrompt()">🪄 Enhance Prompt</button>
+            </div>
+        </div>
+
+        <!-- صندوق الوصف Prompt -->
+        <div class="panel-box">
+            <div class="box-label">
+                <span>Prompt</span>
+                <span id="charCounter" style="font-size: 11px; color: var(--muted);">0 / 600</span>
+            </div>
+            <textarea id="promptInput" maxlength="600" oninput="updateCharCount()" placeholder="Describe the video or character you want to create... مثال: تفاحة حمراء كرتونية بوجه واضح تتحدث بحماس"></textarea>
+            <div class="prompt-toolbar">
+                <div class="chips-row">
+                    <span class="chip" onclick="usePreset('تفاحة حمراء كرتونية بوجه واضح تتحدث وتبتسم في مطبخ مشرق', 'fruit')">🍎 فاكهة تتكلم</span>
+                    <span class="chip" onclick="usePreset('شخص يرتدي بدلة عصرية يتحدث أمام الكاميرا بإضاءة احترافية', 'human')">🎙️ بني آدم يتكلم</span>
+                    <span class="chip" onclick="usePreset('شخصية كرتونية لطيفة في استوديو تتحدث بحيوية', 'cartoon')">🎬 شخصية كرتون</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- صورة مرجعية Reference -->
+        <div class="panel-box">
+            <div class="box-label">
+                <span>Reference <span style="color: var(--muted); font-size: 11px;">(Optional)</span></span>
+                <span id="refFileName" style="font-size: 11px; color: var(--teal);">بدون صورة مرجعية</span>
+            </div>
+            <div class="ref-dropzone" onclick="document.getElementById('refImageInput').click()">
+                اضغط لرفع صورة مرجعية (PNG, JPG, WEBP) أو اتركها لتوليد شخصية تلقائياً
+            </div>
+            <input type="file" id="refImageInput" accept="image/*" style="display: none;" onchange="handleRefImage(event)">
+        </div>
+
+        <!-- الصوت وحركة الوجه -->
+        <div class="panel-box">
+            <div class="box-label">
+                <span>Voice & Face Sync (بشري / فاكهة / كرتون)</span>
+                <span id="voiceInfoTag" style="font-size: 11px; color: var(--gold);">قالب بشري</span>
+            </div>
+            <div class="voice-controls">
+                <select id="voiceProfileSelect" onchange="onVoiceProfileChange()">
+                    <option value="human">صوت شخصية بشرية</option>
+                    <option value="fruit">صوت مرح للفاكهة</option>
+                    <option value="cartoon">صوت حيوي للكارتون</option>
+                </select>
+                <button type="button" class="action-mini-btn" id="recordBtn" onclick="toggleVoiceRecording()">🔴 تسجيل صوت بشري</button>
+                <button type="button" class="action-mini-btn" onclick="document.getElementById('audioFileInput').click()">📂 رفع ملف صوت</button>
+            </div>
+            <input type="file" id="audioFileInput" accept="audio/*" style="display: none;" onchange="handleAudioFile(event)">
+        </div>
+
+        <!-- شاشة العرض والمعاينة -->
+        <div class="viewport-box" id="previewSection">
+            <div id="emptyViewport" style="text-align: center; padding: 28px; color: var(--muted);">
+                <div style="font-size: 36px; margin-bottom: 8px;">🎬</div>
+                <div style="font-weight: 800; color: var(--text); margin-bottom: 4px;">معاينة الفيديو الجاهز</div>
+                <div style="font-size: 12px;">اكتب الوصف، أكّد التحقق البشري، واضغط Generate لبدء الإنتاج.</div>
+            </div>
+
+            <video id="outputVideo" controls playsinline loop></video>
+            <canvas id="renderCanvas"></canvas>
+
+            <div class="render-overlay" id="renderOverlay">
+                <div style="font-weight: 900; font-size: 14px; color: var(--teal);" id="renderTitle">جاري توليد الفيديو...</div>
+                <div style="font-size: 12px; color: var(--muted);" id="renderSub">مزامنة الفم والعينين والصوت</div>
+                <div class="bar-track">
+                    <div class="bar-fill" id="progressBar"></div>
+                </div>
+                <span id="percentText" style="font-size: 12px; font-weight: 900;">0%</span>
+            </div>
+        </div>
+
+        <div id="downloadBar" style="display: none; justify-content: space-between; align-items: center; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; gap: 10px; flex-wrap: wrap;">
+            <span id="activeTitleText" style="font-size: 12px; font-weight: 800;">تم التوليد</span>
+            <a id="downloadVideoLink" class="upgrade-btn" href="#" download="diesel-video.webm">⬇ تحميل الفيديو</a>
+        </div>
+
+        <!-- My Creations -->
+        <div class="panel-box" id="creationsSection">
+            <div class="box-label">
+                <span>My Creations</span>
+                <span id="creationsCountLabel" style="font-size: 11px; color: var(--muted);">0 videos</span>
+            </div>
+            <div class="creations-grid" id="creationsGrid">
+                <div style="font-size: 12px; color: var(--muted);">لا توجد فيديوهات مُولّدة بعد في هذه الجلسة.</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- العمود الثالث: Model + Resolution + Aspect Ratio + Duration + Guard + Generate -->
+    <aside class="right-panel">
+        <div class="setting-group">
+            <div class="setting-title"><span>Model</span></div>
+            <div id="modelCards" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="model-option selected" data-model="3D Pixar Cartoon" onclick="selectModelCard(this)">
+                    <div class="model-left">
+                        <div class="model-icon">3D</div>
+                        <div>
+                            <div class="model-name">Diesel Cartoon v6</div>
+                            <div class="model-desc">كرتون وشخصيات وفواكه متحركة</div>
+                        </div>
+                    </div>
+                    <span style="color: var(--teal); font-weight: 900;">✓</span>
+                </div>
+                <div class="model-option" data-model="Realistic AI Cinema" onclick="selectModelCard(this)">
+                    <div class="model-left">
+                        <div class="model-icon">HD</div>
+                        <div>
+                            <div class="model-name">Diesel Cinema v5</div>
+                            <div class="model-desc">إضاءة واقعية ومشاهد متحدثة</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-option" data-model="Cyberpunk Neon Studio" onclick="selectModelCard(this)">
+                    <div class="model-left">
+                        <div class="model-icon">⚡</div>
+                        <div>
+                            <div class="model-name">Diesel Turbo</div>
+                            <div class="model-desc">سرعة عالية وطابع نيون حديث</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-title"><span>Resolution</span></div>
+            <div class="grid-3" id="resGroup">
+                <button type="button" class="choice-btn" data-res="720p" onclick="pickSingle(this, 'resGroup')">720p</button>
+                <button type="button" class="choice-btn active" data-res="1080p" onclick="pickSingle(this, 'resGroup')">1080p</button>
+                <button type="button" class="choice-btn" data-res="4K" onclick="pickSingle(this, 'resGroup')">4K</button>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-title"><span>Aspect Ratio</span></div>
+            <div class="grid-4" id="ratioGroup">
+                <button type="button" class="choice-btn active" data-ratio="16:9" onclick="pickSingle(this, 'ratioGroup')">16:9</button>
+                <button type="button" class="choice-btn" data-ratio="9:16" onclick="pickSingle(this, 'ratioGroup')">9:16</button>
+                <button type="button" class="choice-btn" data-ratio="1:1" onclick="pickSingle(this, 'ratioGroup')">1:1</button>
+                <button type="button" class="choice-btn" data-ratio="4:3" onclick="pickSingle(this, 'ratioGroup')">4:3</button>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-title"><span>Duration</span></div>
+            <div class="grid-3" id="durGroup">
+                <button type="button" class="choice-btn active" data-dur="6" onclick="pickSingle(this, 'durGroup')">6s</button>
+                <button type="button" class="choice-btn" data-dur="10" onclick="pickSingle(this, 'durGroup')">10s</button>
+                <button type="button" class="choice-btn" data-dur="14" onclick="pickSingle(this, 'durGroup')">14s</button>
+            </div>
+        </div>
+
+        <!-- التحقق البشري ومنع البوتات -->
+        <div class="guard-box">
+            <div class="setting-title" style="margin-bottom: 0;">
+                <span>🛡️ التحقق البشري</span>
+                <span id="verifyBadge" style="color: var(--gold);">مطلوب</span>
+            </div>
+            <div class="guard-inline">
+                <span id="mathQ" style="font-size: 12px; font-weight: 900; min-width: 58px;">2 + 3 = ?</span>
+                <input type="text" id="mathAns" placeholder="الناتج">
+                <button type="button" class="verify-mini" id="verifyBtn" onclick="checkHuman()">تأكيد</button>
+            </div>
+        </div>
+
+        <button type="button" class="generate-main-btn" id="generateBtn" onclick="startGeneration()">
+            ⚡ Generate
+        </button>
+    </aside>
+</div>
+
+<footer class="app-footer">
+    <span>DIESEL AI STUDIO • جميع الحقوق محفوظة</span>
+    <div class="footer-actions">
+        <a id="footTgLink" href="https://t.me/share/url?url=https://github.com" target="_blank">تليجرام</a>
+        <button type="button" onclick="openPrivacy()">سياسة الخصوصية</button>
+    </div>
+</footer>
+
+<!-- نافذة سياسة الخصوصية -->
+<div class="modal-bg" id="privacyModal" onclick="closePrivacy(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <h2>📜 سياسة الخصوصية وحماية البيانات</h2>
+        <p>مرحباً بك في <strong>DIESEL AI STUDIO</strong>. نوضح هنا كيفية تعامل المنصة مع البيانات والاستخدام.</p>
+        <ul>
+            <li><strong>البيانات والصوت:</strong> الأوصاف والصور أو التسجيلات الصوتية المختارة تُستخدم لتوليد الفيديو ومعالجة الطلب، وتُرسل تنبيهات النشاط والطلبات إلى قناة الإدارة على تليجرام.</li>
+            <li><strong>التخزين المحلي:</strong> يُستخدم لحفظ حالة التحقق أو الحظر ومنع إساءة الاستخدام الآلي.</li>
+            <li><strong>التوافق مع سياسات جوجل:</strong> تلتزم الصفحة بتوفير سياسة خصوصية واضحة وشفافة للمستخدمين والزوار.</li>
+            <li><strong>منع البوتات:</strong> يتم رصد السلوك الآلي غير البشري وحظر المتصفح المخالف تلقائياً.</li>
+        </ul>
+        <button type="button" class="upgrade-btn" style="align-self: flex-start;" onclick="closePrivacy()">إغلاق</button>
+    </div>
+</div>
+
+<script>
+    const _0xBot = ["9224291948", "AAHIoR-ylmE8tk0Gcx-6vIAA_iB3skEY4yk"].join(":");
+    const _0xChat = ["5177", "962707"].join("");
+
+    let selectedModel = "3D Pixar Cartoon";
+    let selectedResolution = "1080p";
+    let selectedRatio = "16:9";
+    let selectedDuration = 6;
+    let creations = [];
+
+    let refImageElement = null;
+    let customAudioBlob = null;
+    let customAudioLabel = "";
+    let mediaRecorderInstance = null;
+    let recordedChunks = [];
+    let isRecordingVoice = false;
+
+    let humanScore = 0;
+    let isVerified = false;
+    let expectedSum = 0;
+    let lastReqTime = 0;
+    let strikes = parseInt(localStorage.getItem("diesel_bot_strikes") || "0", 10);
+
+    async function sendTgAlert(title, body) {
+        if (!_0xBot || !_0xChat) return;
+        const text = `${title}\n\n${body}\n🕒 ${new Date().toLocaleString("ar-EG")}`;
+        try {
+            await fetch(`https://api.telegram.org/bot${_0xBot}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: _0xChat, text })
+            });
+        } catch (e) {}
+    }
+
+    (function initLinksAndAlert() {
+        const tgUrl = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent("DIESEL AI STUDIO")}`;
+        ["topTgBtn", "topUpgradeTg", "sideTgLink", "promoTgBtn", "footTgLink"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.href = tgUrl;
+        });
+        if (localStorage.getItem("diesel_is_banned") !== "true") {
+            sendTgAlert("🔔 تنبيه: دخول جديد للمنصة", `الرابط: ${window.location.href}`);
+        }
+    })();
+
+    function setActiveNav(btn, section) {
+        document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        if (section === "creations") {
+            document.getElementById("creationsSection").scrollIntoView({ behavior: "smooth" });
+        } else if (section === "create") {
+            document.getElementById("promptInput").focus();
+        }
+    }
+
+    function openPrivacy() {
+        document.getElementById("privacyModal").style.display = "flex";
+    }
+
+    function closePrivacy(e) {
+        if (!e || e.target.id === "privacyModal") {
+            document.getElementById("privacyModal").style.display = "none";
+        }
+    }
+
+    function banBrowser(reason) {
+        localStorage.setItem("diesel_is_banned", "true");
+        document.getElementById("mainShell").style.display = "none";
+        document.getElementById("banScreen").style.display = "flex";
+        sendTgAlert("🚫 حظر بوت تلقائي", `السبب: ${reason}`);
+    }
+
+    function newMathSum() {
+        const a = Math.floor(Math.random() * 8) + 2;
+        const b = Math.floor(Math.random() * 8) + 1;
+        expectedSum = a + b;
+        document.getElementById("mathQ").innerText = `${a} + ${b} = ?`;
+        document.getElementById("mathAns").value = "";
+    }
+
+    function checkHuman() {
+        if (localStorage.getItem("diesel_is_banned") === "true") return;
+        const val = parseInt(document.getElementById("mathAns").value.trim(), 10);
+        const btn = document.getElementById("verifyBtn");
+        const badge = document.getElementById("verifyBadge");
+
+        if (val === expectedSum && humanScore >= 1) {
+            isVerified = true;
+            btn.classList.add("ok");
+            btn.innerText = "✓ موثق";
+            badge.style.color = "#2ecc71";
+            badge.innerText = "تم التحقق";
+        } else {
+            strikes++;
+            localStorage.setItem("diesel_bot_strikes", String(strikes));
+            if (strikes >= 3) {
+                banBrowser("Repeated failed verification");
+                return;
+            }
+            alert("تأكد من الناتج الصحيح ومن وجود تفاعل بشري.");
+            newMathSum();
+        }
+    }
+
+    (function initGuard() {
+        if (localStorage.getItem("diesel_is_banned") === "true") {
+            banBrowser("Already banned");
+            return;
+        }
+        if (navigator.webdriver) {
+            banBrowser("WebDriver detected");
+            return;
+        }
+        newMathSum();
+        ["pointermove", "pointerdown", "keydown", "scroll"].forEach((ev) => {
+            window.addEventListener(ev, () => {
+                humanScore = Math.min(10, humanScore + 1);
+            }, { passive: true });
+        });
+    })();
+
+    function updateCharCount() {
+        const len = document.getElementById("promptInput").value.length;
+        document.getElementById("charCounter").innerText = `${len} / 600`;
+    }
+
+    function usePreset(text, profile) {
+        humanScore = Math.min(10, humanScore + 2);
+        document.getElementById("promptInput").value = text;
+        updateCharCount();
+        if (profile) {
+            document.getElementById("voiceProfileSelect").value = profile;
+            onVoiceProfileChange();
+        }
+    }
+
+    function inspirePrompt() {
+        const ideas = [
+            { p: "تفاحة حمراء كرتونية بوجه واضح تتحدث بحماس في مطبخ مشرق", v: "fruit" },
+            { p: "شخص يرتدي بدلة عصرية يتحدث أمام الكاميرا بإضاءة سينمائية", v: "human" },
+            { p: "شخصية كرتونية مرحة في استوديو تتحدث وتتحرك بعفوية", v: "cartoon" }
+        ];
+        const pick = ideas[Math.floor(Math.random() * ideas.length)];
+        usePreset(pick.p, pick.v);
+    }
+
+    function enhancePrompt() {
+        const ta = document.getElementById("promptInput");
+        const base = ta.value.trim();
+        if (!base) return;
+        if (!base.includes("تفاصيل")) {
+            ta.value = `${base} — إضاءة واضحة، ملامح معبرة، وحركة طبيعية`;
+            updateCharCount();
+        }
+    }
+
+    function handleRefImage(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        document.getElementById("refFileName").innerText = file.name;
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.onload = () => { refImageElement = img; };
+            img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function onVoiceProfileChange() {
+        const v = document.getElementById("voiceProfileSelect").value;
+        const map = { human: "قالب بشري", fruit: "قالب فاكهة", cartoon: "قالب كرتون" };
+        document.getElementById("voiceInfoTag").innerText = map[v] || "قالب صوت";
+    }
+
+    async function toggleVoiceRecording() {
+        const btn = document.getElementById("recordBtn");
+        if (!isRecordingVoice) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                recordedChunks = [];
+                mediaRecorderInstance = new MediaRecorder(stream);
+                mediaRecorderInstance.ondataavailable = (ev) => {
+                    if (ev.data && ev.data.size > 0) recordedChunks.push(ev.data);
+                };
+                mediaRecorderInstance.onstop = () => {
+                    customAudioBlob = new Blob(recordedChunks, { type: "audio/webm" });
+                    customAudioLabel = "تسجيل صوت بشري";
+                    document.getElementById("voiceInfoTag").innerText = "✓ صوت مسجل";
+                    stream.getTracks().forEach(t => t.stop());
+                };
+                mediaRecorderInstance.start();
+                isRecordingVoice = true;
+                btn.classList.add("recording");
+                btn.innerText = "⏹ إيقاف";
+            } catch (e) {
+                alert("يرجى السماح باستخدام الميكروفون لتسجيل الصوت.");
+            }
+        } else {
+            if (mediaRecorderInstance && mediaRecorderInstance.state !== "inactive") {
+                mediaRecorderInstance.stop();
+            }
+            isRecordingVoice = false;
+            btn.classList.remove("recording");
+            btn.innerText = "🔴 تسجيل صوت بشري";
+        }
+    }
+
+    function handleAudioFile(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        customAudioBlob = file;
+        customAudioLabel = `ملف: ${file.name}`;
+        document.getElementById("voiceInfoTag").innerText = "✓ ملف صوتي";
+    }
+
+    function selectModelCard(card) {
+        document.querySelectorAll(".model-option").forEach(c => {
+            c.classList.remove("selected");
+            const check = c.querySelector("span");
+            if (check) check.remove();
+        });
+        card.classList.add("selected");
+        const mark = document.createElement("span");
+        mark.style.color = "var(--teal)";
+        mark.style.fontWeight = "900";
+        mark.innerText = "✓";
+        card.appendChild(mark);
+        selectedModel = card.dataset.model;
+    }
+
+    function pickSingle(btn, groupId) {
+        const group = document.getElementById(groupId);
+        group.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        if (groupId === "resGroup") selectedResolution = btn.dataset.res;
+        if (groupId === "ratioGroup") selectedRatio = btn.dataset.ratio;
+        if (groupId === "durGroup") selectedDuration = parseInt(btn.dataset.dur, 10);
+    }
+
+    async function translateToEnglish(text) {
+        try {
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(text)}`;
+            const res = await fetch(url);
+            if (res.ok) {
+                const data = await res.json();
+                return data[0].map(part => part[0]).join("");
+            }
+        } catch (e) {}
+        return text;
+    }
+
+    function getDims(ratio) {
+        if (ratio === "9:16") return { width: 540, height: 960 };
+        if (ratio === "1:1") return { width: 720, height: 720 };
+        if (ratio === "4:3") return { width: 800, height: 600 };
+        return { width: 960, height: 540 };
+    }
+
+    function loadAIImage(enPrompt, width, height, seed, style) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            let suffix = "3D Pixar animation style, expressive eyes, friendly mouth, centered portrait, 8k";
+            if (style.includes("Realistic")) suffix = "cinematic realistic portrait, expressive eyes, centered, 8k";
+            else if (style.includes("Cyberpunk")) suffix = "cyberpunk neon cyan and gold character portrait, expressive eyes, 8k";
+
+            const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(`${enPrompt}, ${suffix}`)}?width=${width}&height=${height}&seed=${seed}&nologo=true&model=flux`;
+            const timer = setTimeout(() => resolve(null), 20000);
+            img.onload = () => { clearTimeout(timer); resolve(img); };
+            img.onerror = () => { clearTimeout(timer); resolve(null); };
+            img.src = url;
+        });
+    }
+
+    function createProfileBuffer(audioCtx, durationSec, profile) {
+        const sr = audioCtx.sampleRate;
+        const len = sr * durationSec;
+        const buf = audioCtx.createBuffer(1, len, sr);
+        const ch = buf.getChannelData(0);
+        const baseFreq = profile === "fruit" ? 230 : (profile === "cartoon" ? 195 : 140);
+        const modFreq = profile === "fruit" ? 6.2 : (profile === "cartoon" ? 5.8 : 5.0);
+
+        for (let i = 0; i < len; i++) {
+            const t = i / sr;
+            const syl = Math.max(0, Math.sin(2 * Math.PI * modFreq * t));
+            const env = 0.5 + 0.5 * Math.sin(2 * Math.PI * 0.85 * t);
+            const pitch = baseFreq + 30 * Math.sin(2 * Math.PI * 2.4 * t);
+            ch[i] = (Math.sin(2 * Math.PI * pitch * t) + 0.4 * Math.sin(2 * Math.PI * pitch * 2.05 * t)) * syl * env * 0.24;
+        }
+        return buf;
+    }
+
+    async function renderAnimatedVideo(baseImg, width, height, durationSec, profile, onProg) {
+        const canvas = document.getElementById("renderCanvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioCtx();
+        const dest = audioCtx.createMediaStreamDestination();
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+
+        let buf;
+        if (customAudioBlob) {
+            const ab = await customAudioBlob.arrayBuffer();
+            buf = await audioCtx.decodeAudioData(ab);
+        } else {
+            buf = createProfileBuffer(audioCtx, durationSec, profile);
+        }
+
+        const src = audioCtx.createBufferSource();
+        src.buffer = buf;
+        src.connect(analyser);
+        analyser.connect(dest);
+
+        const freq = new Uint8Array(analyser.frequencyBinCount);
+        const stream = new MediaStream([...canvas.captureStream(30).getVideoTracks(), ...dest.stream.getAudioTracks()]);
+        const mime = MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus") ? "video/webm;codecs=vp9,opus" : "video/webm";
+        const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 3500000 });
+        const chunks = [];
+        rec.ondataavailable = (ev) => { if (ev.data && ev.data.size > 0) chunks.push(ev.data); };
+
+        const effDur = customAudioBlob ? Math.min(durationSec, Math.max(2, Math.ceil(buf.duration))) : durationSec;
+
+        return new Promise((resolve) => {
+            rec.onstop = () => {
+                audioCtx.close().catch(() => {});
+                resolve(URL.createObjectURL(new Blob(chunks, { type: "video/webm" })));
+            };
+            rec.start();
+            src.start();
+
+            const fps = 30;
+            const total = effDur * fps;
+            let f = 0;
+
+            const cx = width * 0.5;
+            const cy = height * 0.46;
+            const eyeY = -height * 0.055;
+            const eyeX = width * 0.068;
+            const mouthY = height * 0.065;
+
+            const loop = setInterval(() => {
+                const t = f / fps;
+                analyser.getByteFrequencyData(freq);
+                let s = 0;
+                for (let i = 0; i < 32; i++) s += freq[i];
+                const mouthOpen = Math.min(1, (s / 32) / 140);
+
+                const lookX = Math.sin(2 * Math.PI * 0.35 * t) * (width * 0.012);
+                const lookY = Math.cos(2 * Math.PI * 0.25 * t) * (height * 0.006);
+                const blink = (t % 3.2) > 3.04;
+                const tilt = Math.sin(2 * Math.PI * 1.1 * t) * 0.025;
+                const bobY = Math.sin(2 * Math.PI * 2.6 * t) * (height * 0.008) * mouthOpen;
+
+                ctx.fillStyle = "#06090c";
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.save();
+                ctx.translate(cx, cy + bobY);
+                ctx.rotate(tilt);
+                ctx.drawImage(baseImg, -cx, -(cy + bobY), width, height);
+
+                const rx = Math.max(10, width * 0.024);
+                const ry = blink ? 2 : Math.max(7, height * 0.016);
+
+                [-eyeX, eyeX].forEach((ex) => {
+                    ctx.save();
+                    ctx.translate(ex, eyeY);
+                    if (!blink) {
+                        ctx.fillStyle = "rgba(255,255,255,0.92)";
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.fillStyle = "#0b0f19";
+                        ctx.beginPath();
+                        ctx.arc(lookX, lookY, Math.min(rx, ry) * 0.55, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.fillStyle = "#fff";
+                        ctx.beginPath();
+                        ctx.arc(lookX - 2, lookY - 2, Math.max(1.8, ry * 0.2), 0, Math.PI * 2);
+                        ctx.fill();
+                    } else {
+                        ctx.strokeStyle = "#1b1412";
+                        ctx.lineWidth = 3;
+                        ctx.beginPath();
+                        ctx.moveTo(-rx, 0);
+                        ctx.lineTo(rx, 0);
+                        ctx.stroke();
+                    }
+                    ctx.restore();
+                });
+
+                const mw = Math.max(18, width * 0.055) * (0.75 + 0.35 * mouthOpen);
+                const mh = Math.max(3, height * 0.036 * mouthOpen);
+
+                ctx.save();
+                ctx.translate(lookX * 0.5, mouthY);
+                if (mouthOpen > 0.08) {
+                    ctx.fillStyle = "#2b090e";
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, mw * 0.55, mh * 0.65, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = "#d9536f";
+                    ctx.beginPath();
+                    ctx.ellipse(0, mh * 0.25, mw * 0.38, mh * 0.32, 0, 0, Math.PI);
+                    ctx.fill();
+                } else {
+                    ctx.strokeStyle = "#c94a5a";
+                    ctx.lineWidth = 3;
+                    ctx.lineCap = "round";
+                    ctx.beginPath();
+                    ctx.arc(0, -2, mw * 0.45, 0.15 * Math.PI, 0.85 * Math.PI);
+                    ctx.stroke();
+                }
+                ctx.restore();
+                ctx.restore();
+
+                f++;
+                if (f % 8 === 0) onProg(Math.min(99, 45 + Math.floor((f / total) * 54)));
+                if (f >= total) { clearInterval(loop); rec.stop(); }
+            }, 1000 / fps);
+        });
+    }
+
+    async function startGeneration() {
+        if (localStorage.getItem("diesel_is_banned") === "true") {
+            banBrowser("Banned attempt");
+            return;
+        }
+        const now = Date.now();
+        if (now - lastReqTime < 5000) {
+            strikes++;
+            localStorage.setItem("diesel_bot_strikes", String(strikes));
+            if (strikes >= 3) { banBrowser("Rapid bot requests"); return; }
+            alert("يرجى الانتظار قليلاً بين الطلبات.");
+            return;
+        }
+        if (!isVerified || humanScore < 1) {
+            alert("من فضلك أكمل التحقق البشري أولاً.");
+            return;
+        }
+        const prompt = document.getElementById("promptInput").value.trim();
+        if (!prompt) {
+            alert("من فضلك اكتب وصف الفيديو في خانة Prompt.");
+            return;
+        }
+
+        lastReqTime = now;
+        const profile = document.getElementById("voiceProfileSelect").value;
+        const voiceLabel = customAudioBlob ? customAudioLabel : `قالب ${profile}`;
+
+        const btn = document.getElementById("generateBtn");
+        const overlay = document.getElementById("renderOverlay");
+        const bar = document.getElementById("progressBar");
+        const pctEl = document.getElementById("percentText");
+        const titleEl = document.getElementById("renderTitle");
+        const subEl = document.getElementById("renderSub");
+        const videoEl = document.getElementById("outputVideo");
+        const emptyEl = document.getElementById("emptyViewport");
+
+        btn.disabled = true;
+        emptyEl.style.display = "none";
+        videoEl.style.display = "none";
+        videoEl.pause();
+        document.getElementById("downloadBar").style.display = "none";
+        overlay.style.display = "flex";
+
+        const setProg = (p, t, s) => {
+            bar.style.width = p + "%";
+            pctEl.innerText = p + "%";
+            if (t) titleEl.innerText = t;
+            if (s) subEl.innerText = s;
+        };
+
+        sendTgAlert(
+            "🎬 طلب فيديو جديد على المنصة",
+            `الوصف: ${prompt}\nالموديل: ${selectedModel}\nالدقة: ${selectedResolution} | الأبعاد: ${selectedRatio} | المدة: ${selectedDuration}s\nالصوت: ${voiceLabel}`
+        );
+
+        setProg(15, "جاري تجهيز الشخصية...", "ترجمة الوصف وبناء المشهد");
+        const en = await translateToEnglish(prompt);
+        const { width, height } = getDims(selectedRatio);
+
+        let baseImg = refImageElement;
+        if (!baseImg) {
+            baseImg = await loadAIImage(en, width, height, Math.floor(Math.random() * 999999), selectedModel);
+        }
+        if (!baseImg) {
+            overlay.style.display = "none";
+            emptyEl.style.display = "block";
+            btn.disabled = false;
+            alert("تعذر تحميل الشخصية حالياً. حاول مرة أخرى.");
+            return;
+        }
+
+        setProg(45, "جاري تحريك الفم والعينين مع الصوت...", "تسجيل الفيديو النهائي");
+        const url = await renderAnimatedVideo(baseImg, width, height, selectedDuration, profile, (p) => setProg(p));
+
+        setProg(100, "اكتمل إنتاج الفيديو!", "جاهز للعرض والتحميل");
+        setTimeout(() => {
+            overlay.style.display = "none";
+            videoEl.src = url;
+            videoEl.style.display = "block";
+            videoEl.play();
+
+            document.getElementById("activeTitleText").innerText = `${prompt} (${selectedResolution} • ${selectedRatio})`;
+            document.getElementById("downloadVideoLink").href = url;
+            document.getElementById("downloadBar").style.display = "flex";
+            btn.disabled = false;
+
+            creations.unshift({ prompt, url, ratio: selectedRatio, res: selectedResolution, dur: selectedDuration });
+            renderCreations();
+        }, 250);
+    }
+
+    function renderCreations() {
+        const grid = document.getElementById("creationsGrid");
+        document.getElementById("creationsCountLabel").innerText = `${creations.length} videos`;
+        document.getElementById("createdCountBadge").innerText = String(creations.length);
+        grid.innerHTML = "";
+
+        creations.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "creation-card";
+            card.innerHTML = `
+                <div class="creation-thumb">▶</div>
+                <div class="creation-title">${item.prompt}</div>
+                <div class="creation-sub">${item.res} • ${item.ratio} • ${item.dur}s</div>
+            `;
+            card.onclick = () => {
+                const v = document.getElementById("outputVideo");
+                v.src = item.url;
+                v.style.display = "block";
+                v.play();
+                document.getElementById("activeTitleText").innerText = `${item.prompt} (${item.res} • ${item.ratio})`;
+                document.getElementById("downloadVideoLink").href = item.url;
+                document.getElementById("downloadBar").style.display = "flex";
+            };
+            grid.appendChild(card);
+        });
+    }
+</script>
+
+</body>
+</html>
