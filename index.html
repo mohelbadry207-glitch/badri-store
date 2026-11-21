@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b20">
+<title>ALBADR AI STUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080b20;--panel:#111735;--panel2:#151d40;--line:#29345f;--text:#f5f6ff;--muted:#a9b2d5;--purple:#8147ff;--blue:#3b68ff;--cyan:#25c7e8;--shadow:0 18px 55px #0007}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#24215c 0,transparent 35%),radial-gradient(ellipse at 10% 70%,#102d58 0,transparent 32%),var(--bg);color:var(--text);font-family:Cairo,Arial,sans-serif;min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit;border:0}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.side{padding:24px 16px;background:#090e25eF;border-left:1px solid var(--line);position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:11px;padding:4px 8px 26px;font-size:19px;font-weight:900;letter-spacing:.4px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#a14bff,#276dff,#27d2e6);display:grid;place-items:center;font-size:23px;box-shadow:0 0 25px #754dff88}.brand small{display:block;color:#a28aff;font-size:11px;letter-spacing:2px}.nav{display:grid;gap:7px}.nav button{display:flex;align-items:center;gap:13px;padding:12px 14px;background:transparent;border-radius:13px;color:#c3cbe8;text-align:right}.nav button.active,.nav button:hover{background:linear-gradient(100deg,#783eff,#314fe4);color:white;box-shadow:0 8px 22px #633cff55}.nav .ico{font-size:19px;width:24px;text-align:center}.side-note{margin-top:30px;padding:17px;border:1px solid #3d3b76;border-radius:17px;background:linear-gradient(145deg,#1c2050,#101932);text-align:center}.side-note b{display:block;margin:5px}.side-note p{color:var(--muted);font-size:12px;margin:4px 0 12px}.main{min-width:0;padding:22px 28px 60px}.top{display:flex;align-items:center;gap:15px;margin-bottom:23px}.search{flex:1;max-width:560px;position:relative}.search input{width:100%;padding:12px 42px 12px 15px;border-radius:14px;background:#141b39;border:1px solid var(--line);color:white;outline:none}.search span{position:absolute;right:14px;top:9px;color:#9ba8d4;font-size:20px}.top-actions{display:flex;gap:9px;align-items:center;margin-inline-start:auto}.pill{border:1px solid var(--line);background:#141b39;border-radius:30px;padding:9px 14px}.primary{background:linear-gradient(110deg,#933dff,#385bff);padding:11px 18px;border-radius:13px;box-shadow:0 8px 22px #633cff55;font-weight:800}.secondary{background:#1b2449;border:1px solid #354575;padding:10px 15px;border-radius:12px}.ghost{background:transparent;border:1px solid var(--line);padding:9px 13px;border-radius:11px}.page{display:none}.page.active{display:block}.hero{display:grid;grid-template-columns:1.55fr 1fr;gap:17px;margin-bottom:20px}.hero-main{min-height:270px;border:1px solid #5368aa;border-radius:20px;overflow:hidden;position:relative;background:linear-gradient(90deg,#080f2b 0%,#101b45bb 48%,#10152a22),url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1400') center/cover;display:flex;align-items:center;padding:32px}.hero-main h1{font-size:clamp(26px,3.2vw,43px);line-height:1.25;margin:0 0 10px}.hero-main p{color:#e0e6ff;max-width:470px}.hero-ai{border:1px solid #4d4a91;border-radius:20px;padding:22px;background:radial-gradient(circle at 90% 30%,#254b9b 0,transparent 42%),linear-gradient(140deg,#1a1c53,#10172e);position:relative;overflow:hidden}.hero-ai:after{content:"✦";position:absolute;left:18px;top:5px;font-size:110px;color:#8c71ff22}.hero-ai textarea,.field textarea{width:100%;min-height:90px;resize:vertical;background:#0d1430;border:1px solid #354575;border-radius:12px;padding:12px;color:white;outline:none}.hero-ai .primary{width:100%;margin-top:10px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px}.section-head h2{font-size:19px;margin:0}.muted{color:var(--muted)}.templates{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.template{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#111936;cursor:pointer;transition:.2s}.template:hover{transform:translateY(-3px);border-color:#8b65ff}.template img{width:100%;height:115px;object-fit:cover;display:block}.template b{display:block;padding:9px 11px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:linear-gradient(145deg,#151d40,#0e1530);border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:var(--shadow)}.card h3{margin:0 0 12px;font-size:16px}.stat{font-size:26px;font-weight:900}.field{display:grid;gap:7px;margin:12px 0}.field label{font-size:13px;color:#c8d0ed}.field input,.field select,.field textarea{width:100%;background:#0c1430;border:1px solid #34416c;border-radius:11px;padding:11px;color:white;outline:none}.field input[type=file]{padding:9px}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}.notice{border:1px solid #66529a;background:#211c4a;padding:13px;border-radius:12px;color:#ddd5ff;font-size:13px;margin:12px 0}.good{border-color:#276e70;background:#102f3b}.project-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.project{border:1px solid var(--line);background:#111936;border-radius:15px;overflow:hidden}.project img{width:100%;height:120px;object-fit:cover;background:#20294c}.project-body{padding:12px}.project-body p{font-size:12px;color:var(--muted)}.preview-wrap{background:#050814;border:1px solid var(--line);border-radius:17px;padding:12px}.preview{width:100%;max-height:420px;background:#000;border-radius:12px;display:block}.timeline{display:flex;gap:8px;overflow:auto;padding:12px 0}.clip{min-width:130px;padding:12px;border:1px solid #45517d;border-radius:12px;background:#1a2348}.clip.active{border-color:#a276ff}.clip button{background:transparent;color:#ff9aab}.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed #45517d;border-radius:14px}.footer{color:#7f8bb7;font-size:12px;text-align:center;margin-top:35px}.hide{display:none!important}body.light{--bg:#edf0ff;--panel:#fff;--panel2:#f4f5ff;--line:#d5daf0;--text:#182044;--muted:#606b91;background:linear-gradient(130deg,#eef0ff,#dceaff)}body.light .side{background:#f9faff}body.light .nav button{color:#39436d}body.light .search input,body.light .pill,body.light .field input,body.light .field select,body.light .field textarea,body.light .hero-ai textarea{background:#fff;color:#182044}body.light .card,body.light .template,body.light .project{background:#fff;color:#182044}body.light .hero-ai{color:white}body.light .hero-main{color:white}
+@media(max-width:1050px){.app{grid-template-columns:205px 1fr}.templates{grid-template-columns:repeat(3,1fr)}.hero{grid-template-columns:1fr}.hero-main{min-height:230px}}
+@media(max-width:700px){.app{display:block}.side{height:auto;position:relative;padding:12px;border-left:0;border-bottom:1px solid var(--line)}.brand{padding:3px 7px 12px}.nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap;padding:9px 11px;font-size:12px}.nav .ico{font-size:16px}.side-note{display:none}.main{padding:14px}.top{flex-wrap:wrap}.search{order:3;max-width:none;flex-basis:100%}.top-actions{margin-inline-start:0}.hero-main{padding:22px;min-height:220px}.templates{grid-template-columns:repeat(2,1fr)}.cards,.project-list{grid-template-columns:1fr}.section-head h2{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand"><div class="logo">▶</div><div>ALBADR<small>AI STUDIO</small></div></div>
+  <nav class="nav">
+    <button class="active" data-page="home"><span class="ico">⌂</span><span data-i18n="home">الرئيسية</span></button>
+    <button data-page="editor"><span class="ico">✂</span><span data-i18n="editor">محرر الفيديو</span></button>
+    <button data-page="templates"><span class="ico">▦</span><span data-i18n="templates">القوالب</span></button>
+    <button data-page="projects"><span class="ico">▱</span><span data-i18n="projects">مشاريعي</span></button>
+    <button data-page="ai"><span class="ico">✦</span><span data-i18n="ai">خدمات AI</span></button>
+    <button data-page="voice"><span class="ico">♫</span><span data-i18n="voice">استوديو الصوت</span></button>
+    <button data-page="settings"><span class="ico">⚙</span><span data-i18n="settings">الإعدادات</span></button>
+  </nav>
+  <div class="side-note"><div style="font-size:26px">♛</div><b>ALBADR STUDIO</b><p>مساحة إبداعك لصناعة الفيديو</p><button class="secondary" onclick="go('settings')">إعداد المنصة</button></div>
+</aside>
+<main class="main">
+<header class="top">
+  <div class="search"><span>⌕</span><input id="searchBox" placeholder="ابحث عن القوالب والمشاريع..."></div>
+  <div class="top-actions"><button class="pill" id="themeBtn">☼ / ☾</button><button class="pill" id="langBtn">العربية ▾</button><button class="primary" onclick="go('ai')">✦ ابدأ الإنشاء</button></div>
+</header>
+
+<section class="page active" id="page-home">
+ <div class="hero">
+  <div class="hero-main"><div><div class="pill" style="display:inline-block">✦ منصة صناعة الفيديو</div><h1>أهلاً بك في<br>ALBADR AI STUDIO</h1><p>حوّل أفكارك إلى فيديوهات مميزة. ابدأ بمشروع جديد أو استخدم أحد القوالب الاحترافية.</p><button class="primary" onclick="go('ai')">▶ ابدأ إنشاء فيديو</button> <button class="ghost" onclick="go('editor')">افتح المحرر</button></div></div>
+  <div class="hero-ai"><h2>إنشاء فيديو بالذكاء الاصطناعي</h2><p class="muted">اكتب وصف فكرتك واختر المحرك المتصل من الإعدادات.</p><textarea id="homePrompt" placeholder="مثال: إعلان سينمائي لمنتج جديد بإضاءة احترافية..."></textarea><button class="primary" onclick="sendPrompt('homePrompt')">✦ إنشاء الفيديو</button></div>
+ </div>
+ <div class="section-head"><h2>⭐ قوالب مقترحة</h2><button class="ghost" onclick="go('templates')">عرض الكل ←</button></div>
+ <div class="templates">
+  <div class="template" onclick="useTemplate('إعلان منتج احترافي بإضاءة سينمائية')"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500" alt=""><b>إعلان منتجات</b></div>
+  <div class="template" onclick="useTemplate('مشهد سينمائي واسع بإضاءة درامية')"><img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500" alt=""><b>سينمائي</b></div>
+  <div class="template" onclick="useTemplate('فيديو تعليمي واضح برسوم توضيحية')"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500" alt=""><b>تعليمي</b></div>
+  <div class="template" onclick="useTemplate('إعلان سفر بطائرة فوق السحاب')"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=500" alt=""><b>سفر وسياحة</b></div>
+  <div class="template" onclick="useTemplate('فيديو ترويجي لمنصة تقنية حديثة')"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500" alt=""><b>تقنية</b></div>
+ </div>
+ <div class="section-head"><h2>نظرة عامة</h2></div>
+ <div class="cards"><div class="card"><div class="muted">مشاريع محفوظة</div><div class="stat" id="statProjects">0</div></div><div class="card"><div class="muted">وسائط مضافة</div><div class="stat" id="statMedia">0</div></div><div class="card"><div class="muted">محرك AI</div><div class="stat" id="statEngine" style="font-size:18px">غير متصل</div></div></div>
+</section>
+
+<section class="page" id="page-editor">
+ <div class="section-head"><h2>✂ محرر الفيديو</h2><span class="muted">معاينة وترتيب المقاطع محلياً داخل المتصفح</span></div>
+ <div class="cards" style="grid-template-columns:1fr 1fr">
+  <div class="card"><h3>إضافة الوسائط</h3><div class="field"><label>اختر فيديو أو صورة</label><input type="file" id="mediaInput" accept="video/*,image/*" multiple></div><div class="field"><label>النص الظاهر على الفيديو</label><input id="overlayText" placeholder="اكتب عنوان المشهد هنا"></div><button class="primary" onclick="applyText()">إضافة النص للمعاينة</button><div class="field"><label>إضافة ملف صوت</label><input type="file" id="audioInput" accept="audio/*"></div><audio id="audioPreview" controls class="hide" style="width:100%"></audio></div>
+  <div class="card"><h3>شاشة المعاينة</h3><div class="preview-wrap" id="previewWrap"><div class="empty" id="previewEmpty">ارفع فيديو أو صورة لعرضها هنا</div><video id="videoPreview" class="preview hide" controls playsinline></video><img id="imagePreview" class="preview hide" alt="معاينة الصورة"><div id="overlayPreview" style="font-size:22px;font-weight:900;text-align:center;padding:10px"></div></div><div class="row" style="margin-top:12px"><button class="secondary" onclick="downloadCurrent()">تحميل الوسيط</button><button class="ghost" onclick="clearPreview()">مسح المعاينة</button></div></div>
+ </div>
+ <div class="section-head"><h2>مسار المشاهد</h2><span class="muted">اسحب المقاطع لترتيبها</span></div><div class="timeline" id="timeline"><div class="empty" style="width:100%">لم تتم إضافة مشاهد بعد</div></div>
+ <div class="notice">هذه نسخة محرر متصفح: تتيح المعاينة وترتيب قائمة المشاهد وإضافة نص للمعاينة. القصّ الدقيق ودمج الصوت وتصدير ملف فيديو نهائي يحتاجان محرك معالجة فيديو مثل FFmpeg على الخادم أو داخل المتصفح.</div>
+ <button class="primary" onclick="saveProject()">حفظ المشروع</button>
+</section>
+
+<section class="page" id="page-templates">
+ <div class="section-head"><h2>مكتبة القوالب</h2></div><div class="templates">
+  <div class="template" onclick="useTemplate('إعلان تجاري قصير لمنتج فاخر')"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"><b>إعلان تجاري</b></div>
+  <div class="template" onclick="useTemplate('مشهد فيلم درامي سينمائي')"><img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500"><b>مشهد سينمائي</b></div>
+  <div class="template" onclick="useTemplate('درس تعليمي مبسط مع عناوين')"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500"><b>تعليمي</b></div>
+  <div class="template" onclick="useTemplate('إعلان عقاري فاخر لمشروع سكني')"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500"><b>عقارات</b></div>
+  <div class="template" onclick="useTemplate('فيديو ترويجي لمطعم وأطباق شهية')"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500"><b>مطاعم</b></div>
+ </div><p class="muted">اضغط على أي قالب لإرسال وصفه إلى صفحة إنشاء الفيديو.</p>
+</section>
+
+<section class="page" id="page-projects">
+ <div class="section-head"><h2>📁 مشاريعي</h2><button class="primary" onclick="newProject()">+ مشروع جديد</button></div><div class="project-list" id="projectList"></div>
+ <div class="row" style="margin-top:15px"><button class="secondary" onclick="exportProjects()">تصدير نسخة احتياطية للمشاريع JSON</button><label class="ghost" style="text-align:center;cursor:pointer">استيراد مشاريع<input type="file" id="importProjects" accept=".json,application/json" hidden></label></div>
+</section>
+
+<section class="page" id="page-ai">
+ <div class="section-head"><h2>✦ إنشاء فيديو بالذكاء الاصطناعي</h2><span class="pill" id="connectionBadge">غير متصل</span></div>
+ <div class="cards" style="grid-template-columns:1.2fr .8fr">
+  <div class="card"><h3>وصف الفيديو</h3><div class="field"><label>اكتب فكرتك بالتفصيل</label><textarea id="aiPrompt" style="min-height:150px" placeholder="صف المشهد، الشخصية، حركة الكاميرا، الإضاءة، والأسلوب..."></textarea></div>
+   <div class="row"><div class="field"><label>نوع الإنشاء</label><select id="aiMode"><option value="text-to-video">نص إلى فيديو</option><option value="image-to-video">صورة إلى فيديو</option></select></div><div class="field"><label>نسبة العرض</label><select id="ratio"><option>16:9</option><option>9:16</option><option>1:1</option></select></div></div>
+   <div class="row"><div class="field"><label>الجودة</label><select id="quality"><option>720p</option><option>1080p</option><option>4K</option></select></div><div class="field"><label>المدة المطلوبة</label><select id="duration"><option value="5">5 ثوانٍ</option><option value="10">10 ثوانٍ</option><option value="15">15 ثانية</option></select></div></div>
+   <div class="field"><label>صورة مرجعية (اختياري)</label><input id="referenceImage" type="file" accept="image/*"></div>
+   <button class="primary" onclick="generateAI()">✦ إرسال إلى محرك AI</button><div id="aiStatus" class="notice">أضف عنوان Backend في الإعدادات لتفعيل الاتصال بمحرك التوليد.</div>
+  </div>
+  <div class="card"><h3>محركات الذكاء الاصطناعي</h3><p class="muted">المنصة مجهزة للتكامل مع محرك فيديو تختاره من خلال Backend موحد.</p><div class="notice">يدعم التصميم نقطة API موحدة لطلبات النص إلى فيديو والصورة إلى فيديو، واستعلام حالة المهمة، واستلام رابط النتيجة.</div><ul class="muted" style="line-height:2"><li>Text to Video</li><li>Image to Video</li><li>Voice / Text to Speech</li><li>Lip Sync عبر مزود يدعمه</li><li>حالة المهمة والنتيجة</li></ul><button class="secondary" onclick="go('settings')">ضبط اتصال المحرك</button></div>
+ </div>
+</section>
+
+<section class="page" id="page-voice">
+ <div class="section-head"><h2>♫ استوديو الصوت</h2></div><div class="cards" style="grid-template-columns:1fr 1fr">
+  <div class="card"><h3>تجربة تحويل النص إلى كلام</h3><div class="field"><label>النص</label><textarea id="speechText" placeholder="اكتب النص الذي تريد سماعه..."></textarea></div><div class="field"><label>الصوت المتاح على جهازك</label><select id="voiceSelect"></select></div><div class="row"><button class="primary" onclick="speakText()">▶ تجربة الصوت</button><button class="secondary" onclick="speechSynthesis.cancel()">إيقاف</button></div><p class="muted">الأصوات هنا من المتصفح والجهاز، وليست خدمة تعليق صوتي سحابية احترافية.</p></div>
+  <div class="card"><h3>صوت مرفق</h3><div class="field"><label>رفع ملف صوت</label><input type="file" id="voiceFile" accept="audio/*"></div><audio id="voicePlayer" controls style="width:100%"></audio><div class="notice">المزامنة التلقائية للشفاه تحتاج مزود Lip Sync متصل بالـBackend.</div></div>
+ </div>
+</section>
+
+<section class="page" id="page-settings">
+ <div class="section-head"><h2>⚙ إعدادات المنصة والربط</h2></div><div class="card" style="max-width:760px"><h3>اتصال Backend</h3>
+  <div class="notice">ضع عنوان خادمك هنا. لا تضع مفتاح API السري في هذا الملف أو في GitHub Pages. يجب حفظه داخل متغيرات بيئة الخادم.</div>
+  <div class="field"><label>Backend Base URL</label><input id="backendUrl" placeholder="https://your-backend.example.com"></div>
+  <div class="field"><label>مسار إنشاء المهمة</label><input id="generatePath" value="/api/generate"></div>
+  <div class="field"><label>مسار حالة المهمة (استخدم {id})</label><input id="statusPath" value="/api/jobs/{id}"></div>
+  <div class="field"><label>مسار فحص الاتصال</label><input id="healthPath" value="/api/health"></div>
+  <div class="row"><button class="primary" onclick="saveSettings()">حفظ الإعدادات</button><button class="secondary" onclick="checkBackend()">اختبار الاتصال</button></div><div id="backendStatus" class="notice">لم يتم اختبار الاتصال بعد.</div>
+ </div>
+ <div class="card" style="max-width:760px;margin-top:15px"><h3>اللغة والمظهر</h3><p class="muted">يمكنك التبديل بين العربية والإنجليزية والوضع الليلي والنهاري من الشريط العلوي.</p><button class="secondary" onclick="toggleLang()">تبديل اللغة</button> <button class="secondary" onclick="toggleTheme()">تبديل المظهر</button></div>
+</section>
+<div class="footer">ALBADR AI STUDIO · واجهة تجريبية قابلة للربط بخدمات AI · احفظ نسخة من مشاريعك باستمرار</div>
+</main></div>
+<script>
+const $=id=>document.getElementById(id);
+let mediaItems=[],currentMedia=null,currentUrl=null,projects=JSON.parse(localStorage.getItem('albadProjects')||'[]');
+let settings=JSON.parse(localStorage.getItem('albadSettings')||'{}');
+let lang=localStorage.getItem('albadLang')||'ar';
+const translations={en:{home:'Home',editor:'Video Editor',templates:'Templates',projects:'My Projects',ai:'AI Services',voice:'Voice Studio',settings:'Settings'},ar:{home:'الرئيسية',editor:'محرر الفيديو',templates:'القوالب',projects:'مشاريعي',ai:'خدمات AI',voice:'استوديو الصوت',settings:'الإعدادات'}};
+function go(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$('page-'+page).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(page==='projects')renderProjects();if(page==='home')updateStats();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+function toggleTheme(){document.body.classList.toggle('light');localStorage.setItem('albadTheme',document.body.classList.contains('light')?'light':'dark')}
+$('themeBtn').onclick=toggleTheme;if(localStorage.getItem('albadTheme')==='light')document.body.classList.add('light');
+function toggleLang(){lang=lang==='ar'?'en':'ar';localStorage.setItem('albadLang',lang);document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=translations[lang][el.dataset.i18n]);$('langBtn').textContent=lang==='ar'?'العربية ▾':'English ▾'}
+$('langBtn').onclick=toggleLang;
+function useTemplate(text){$('aiPrompt').value=text;go('ai')}
+function sendPrompt(id){$('aiPrompt').value=$(id).value;go('ai')}
+function updateStats(){$('statProjects').textContent=projects.length;$('statMedia').textContent=mediaItems.length;$('statEngine').textContent=settings.backendUrl?'مُعدّ للاتصال':'غير متصل'}
+function saveSettings(){settings={backendUrl:$('backendUrl').value.trim().replace(/\/$/,''),generatePath:$('generatePath').value||'/api/generate',statusPath:$('statusPath').value||'/api/jobs/{id}',healthPath:$('healthPath').value||'/api/health'};localStorage.setItem('albadSettings',JSON.stringify(settings));$('backendStatus').textContent='تم حفظ إعدادات الاتصال في هذا المتصفح.';updateConnection()}
+function loadSettings(){$('backendUrl').value=settings.backendUrl||'';$('generatePath').value=settings.generatePath||'/api/generate';$('statusPath').value=settings.statusPath||'/api/jobs/{id}';$('healthPath').value=settings.healthPath||'/api/health';updateConnection()}
+function updateConnection(){let ok=!!settings.backendUrl;$('connectionBadge').textContent=ok?'عنوان Backend محفوظ':'غير متصل';$('statEngine').textContent=ok?'مُعدّ للاتصال':'غير متصل'}
+async function checkBackend(){saveSettings();if(!settings.backendUrl){$('backendStatus').textContent='أدخل عنوان Backend أولاً.';return}try{let r=await fetch(settings.backendUrl+settings.healthPath);if(!r.ok)throw Error('HTTP '+r.status);let d=await r.json();$('backendStatus').textContent='الاتصال ناجح: '+JSON.stringify(d).slice(0,250)}catch(e){$('backendStatus').textContent='تعذر الاتصال: '+e.message+' — تحقق من عنوان الخادم وCORS.'}}
+async function generateAI(){let prompt=$('aiPrompt').value.trim();if(!prompt){$('aiStatus').textContent='اكتب وصف الفيديو أولاً.';return}if(!settings.backendUrl){$('aiStatus').textContent='لا يوجد Backend متصل. افتح الإعدادات وأضف عنوان خادم AI حقيقي.';return}
+ $('aiStatus').textContent='جارٍ إرسال الطلب...';try{let fd=new FormData();fd.append('prompt',prompt);fd.append('mode',$('aiMode').value);fd.append('aspect_ratio',$('ratio').value);fd.append('quality',$('quality').value);fd.append('duration',$('duration').value);let f=$('referenceImage').files[0];if(f)fd.append('image',f);let r=await fetch(settings.backendUrl+settings.generatePath,{method:'POST',body:fd});let d=await r.json();if(!r.ok)throw Error(d.error||'HTTP '+r.status);let id=d.id||d.job_id;if(!id)throw Error('الخادم لم يُرجع id للمهمة');$('aiStatus').textContent='تم استلام المهمة: '+id+' — جارٍ متابعة الحالة...';pollJob(id)}catch(e){$('aiStatus').textContent='فشل الطلب: '+e.message}}
+async function pollJob(id){let path=settings.statusPath.replace('{id}',encodeURIComponent(id));for(let i=0;i<60;i++){await new Promise(r=>setTimeout(r,5000));try{let r=await fetch(settings.backendUrl+path);let d=await r.json();if(!r.ok)throw Error(d.error||r.status);let state=d.status||d.state||'processing';$('aiStatus').textContent='حالة المهمة: '+state;if(['completed','succeeded','success','done'].includes(String(state).toLowerCase())){let url=d.video_url||d.output_url||d.url;if(url){$('aiStatus').innerHTML='اكتمل الفيديو! <a target="_blank" rel="noopener" style="color:#8dcfff" href="'+safeUrl(url)+'">فتح / تحميل النتيجة</a>'}else $('aiStatus').textContent='اكتملت المهمة. راجع استجابة الخادم للحصول على رابط النتيجة.';return}if(['failed','error'].includes(String(state).toLowerCase())){$('aiStatus').textContent='تعذر إنشاء الفيديو: '+(d.error||'خطأ من المزود');return}}catch(e){$('aiStatus').textContent='خطأ أثناء متابعة المهمة: '+e.message;return}}$('aiStatus').textContent='ما زالت المهمة قيد التنفيذ. يمكنك التحقق لاحقاً من لوحة الخادم.'}
+function safeUrl(u){try{let x=new URL(u);return ['https:','http:'].includes(x.protocol)?x.href:'#'}catch{return '#'}}
+$('mediaInput').addEventListener('change',e=>{[...e.target.files].forEach(file=>{let item={name:file.name,type:file.type,url:URL.createObjectURL(file),file};mediaItems.push(item)});renderTimeline();if(mediaItems.length)showMedia(mediaItems.length-1);updateStats()});
+function showMedia(i){let m=mediaItems[i];if(!m)return;currentMedia=m;$('previewEmpty').classList.add('hide');$('videoPreview').classList.add('hide');$('imagePreview').classList.add('hide');if(m.type.startsWith('video')){$('videoPreview').src=m.url;$('videoPreview').classList.remove('hide')}else{$('imagePreview').src=m.url;$('imagePreview').classList.remove('hide')}}
+function renderTimeline(){let box=$('timeline');box.innerHTML='';if(!mediaItems.length){box.innerHTML='<div class="empty" style="width:100%">لم تتم إضافة مشاهد بعد</div>';return}mediaItems.forEach((m,i)=>{let d=document.createElement('div');d.className='clip';d.draggable=true;d.innerHTML='<b>'+(i+1)+'. '+escapeHtml(m.name.slice(0,19))+'</b><br><button type="button">حذف</button>';d.onclick=e=>{if(e.target.tagName!=='BUTTON')showMedia(i)};d.querySelector('button').onclick=()=>{mediaItems.splice(i,1);renderTimeline();if(mediaItems.length)showMedia(0);else clearPreview()};d.ondragstart=e=>e.dataTransfer.setData('text/plain',i);d.ondragover=e=>e.preventDefault();d.ondrop=e=>{e.preventDefault();let from=+e.dataTransfer.getData('text/plain'),to=i;let moved=mediaItems.splice(from,1)[0];mediaItems.splice(to,0,moved);renderTimeline()};box.appendChild(d)})}
+function applyText(){$('overlayPreview').textContent=$('overlayText').value}
+function clearPreview(){$('videoPreview').pause();$('videoPreview').removeAttribute('src');$('videoPreview').classList.add('hide');$('imagePreview').removeAttribute('src');$('imagePreview').classList.add('hide');$('previewEmpty').classList.remove('hide');$('overlayPreview').textContent='';currentMedia=null}
+function downloadCurrent(){if(!currentMedia){alert('اختر وسيطاً أولاً');return}let a=document.createElement('a');a.href=currentMedia.url;a.download=currentMedia.name;a.click()}
+$('audioInput').onchange=e=>{let f=e.target.files[0];if(f){$('audioPreview').src=URL.createObjectURL(f);$('audioPreview').classList.remove('hide')}};
+$('voiceFile').onchange=e=>{let f=e.target.files[0];if(f)$('voicePlayer').src=URL.createObjectURL(f)};
+function newProject(){let n=prompt('اسم المشروع الجديد:','مشروعي الجديد');if(!n)return;projects.unshift({id:Date.now(),name:n,description:'مشروع جديد',date:new Date().toLocaleString('ar-EG')});persistProjects();renderProjects()}
+function saveProject(){let name=prompt('اكتب اسم المشروع لحفظه:','مشروع فيديو');if(!name)return;projects.unshift({id:Date.now(),name,description:$('aiPrompt').value||$('overlayText').value||'مشروع محرر',date:new Date().toLocaleString('ar-EG'),clips:mediaItems.map(m=>({name:m.name,type:m.type}))});persistProjects();alert('تم حفظ بيانات المشروع في هذا المتصفح. ملفات الوسائط نفسها لا تُرفع إلى السحابة.')}
+function persistProjects(){localStorage.setItem('albadProjects',JSON.stringify(projects));updateStats()}
+function renderProjects(){let box=$('projectList');box.innerHTML='';if(!projects.length){box.innerHTML='<div class="empty" style="grid-column:1/-1">لا توجد مشاريع محفوظة بعد. ابدأ مشروعاً جديداً.</div>';return}projects.forEach(p=>{let d=document.createElement('div');d.className='project';d.innerHTML='<img src="https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=500" alt=""><div class="project-body"><b>'+escapeHtml(p.name)+'</b><p>'+escapeHtml(p.description||'')+'<br>'+escapeHtml(p.date||'')+'</p><button class="secondary">فتح</button> <button class="ghost">حذف</button></div>';d.querySelectorAll('button')[0].onclick=()=>{$('aiPrompt').value=p.description||'';go('ai')};d.querySelectorAll('button')[1].onclick=()=>{if(confirm('حذف المشروع؟')){projects=projects.filter(x=>x.id!==p.id);persistProjects();renderProjects()}};box.appendChild(d)})}
+function exportProjects(){let blob=new Blob([JSON.stringify(projects,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='albad-ai-projects.json';a.click();URL.revokeObjectURL(a.href)}
+$('importProjects').onchange=async e=>{try{let arr=JSON.parse(await e.target.files[0].text());if(!Array.isArray(arr))throw Error();projects=[...arr,...projects];persistProjects();renderProjects();alert('تم استيراد المشاريع')}catch{alert('ملف JSON غير صالح')}};
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function loadVoices(){let list=speechSynthesis.getVoices();$('voiceSelect').innerHTML='';list.forEach((v,i)=>{let o=document.createElement('option');o.value=i;o.textContent=v.name+' ('+v.lang+')';$('voiceSelect').appendChild(o)})}
+function speakText(){let text=$('speechText').value.trim();if(!text)return alert('اكتب النص أولاً');let u=new SpeechSynthesisUtterance(text);let v=speechSynthesis.getVoices()[+$('voiceSelect').value];if(v)u.voice=v;speechSynthesis.speak(u)}
+if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+$('searchBox').addEventListener('keydown',e=>{if(e.key==='Enter'){let q=e.target.value.toLowerCase();let found=[...document.querySelectorAll('.template')].find(x=>x.innerText.toLowerCase().includes(q));if(found){go('templates');found.scrollIntoView({behavior:'smooth',block:'center'})}else go('projects')}});
+loadSettings();updateStats();renderProjects();
+</script>
+</body></html>
